@@ -1,0 +1,8 @@
+{
+  "buildCommand": "",
+  "devCommand": "",
+  "installCommand": "",
+  "framework": "static",
+  "name": "quintumnia",
+  "public": true
+}
