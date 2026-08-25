@@ -1,7 +1,18 @@
 {
-  "buildCommand": "",
-  "devCommand": "",
-  "installCommand": "",
-  "framework": "static",
-  "name": "quintumnia"
+  "name": "quintumnia",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "quintumnia.space"
+        }
+      ],
+      "destination": "https://www.quintumnia.space/:path*",
+      "permanent": true
+    }
+  ]
 }
