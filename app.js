@@ -4,6 +4,7 @@ let crystals = 248;
 let enemies = 5;
 let energy = 65;
 let walletPublicKey = null;
+let walletAddress = '';
 const saleEndsAt = Date.now() + 90 * 24 * 60 * 60 * 1000;
 function mountTierAndLaunchpad() {
   const section = document.createElement('section');
@@ -67,15 +68,18 @@ async function connectWallet() {
   const network = $('#network').value;
   try {
     if (network === 'solana') {
-      if (!window.solana?.isPhantom) throw new Error('Phantom bulunamadı.');
-      const result = await window.solana.connect();
-      walletPublicKey = result.publicKey.toString();
+      const provider = window.phantom?.solana || window.solana;
+      if (!provider?.isPhantom) throw new Error('Phantom bulunamadı.');
+      const result = await provider.connect();
+      walletPublicKey = result.publicKey;
+      walletAddress = walletPublicKey.toString();
     } else {
       if (!window.ethereum) throw new Error('MetaMask bulunamadı.');
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
       walletPublicKey = accounts[0];
+      walletAddress = walletPublicKey;
     }
-    const address = walletPublicKey.toString();
+    const address = walletAddress;
     $('#connectWallet').textContent = `${address.slice(0, 5)}...${address.slice(-4)}`;
     $('#walletStatus').textContent = `Bağlandı: ${address.slice(0, 6)}...${address.slice(-4)}`;
     notify('Cüzdan bağlandı. Satın alma işlemi için miktar gir.');
@@ -93,14 +97,33 @@ async function buyTokens() {
   const network = $('#network').value;
   const asset = $('#asset').value;
   const amount = Number($('#amount').value);
+  const buyButton = $('#buyButton');
+  if (!Number.isFinite(amount) || amount < 0.01) return notify('En az 0.01 ödeme birimi gir.');
+  buyButton.disabled = true;
+  buyButton.textContent = 'İşlem bekleniyor...';
   const key = walletPublicKey || await connectWallet();
-  if (!key || !Number.isFinite(amount) || amount < 0.01) return notify('En az 0.01 ödeme birimi gir.');
+  if (!key) {
+    buyButton.disabled = false;
+    buyButton.textContent = 'QMN satın al →';
+    return;
+  }
   try {
     if (network === 'solana') {
       await loadSolanaWeb3();
+      const provider = window.phantom?.solana || window.solana;
+      if (!provider?.isPhantom || !walletPublicKey?.toBase58) throw new Error('Önce Phantom cüzdanını bağla.');
       const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'), 'confirmed');
-      const transaction = new solanaWeb3.Transaction().add(solanaWeb3.SystemProgram.transfer({ fromPubkey: key, toPubkey: new solanaWeb3.PublicKey(treasury.solana), lamports: Math.round(amount * solanaWeb3.LAMPORTS_PER_SOL) }));
-      const signed = await window.solana.signAndSendTransaction(transaction);
+      const lamports = Math.round(amount * solanaWeb3.LAMPORTS_PER_SOL);
+      const balance = await connection.getBalance(walletPublicKey);
+      const feeBuffer = 5000;
+      if (balance < lamports + feeBuffer) throw new Error('Yetersiz SOL: ödeme ve ağ ücretini karşılayacak bakiye gerekli.');
+      const transaction = new solanaWeb3.Transaction().add(solanaWeb3.SystemProgram.transfer({ fromPubkey: walletPublicKey, toPubkey: new solanaWeb3.PublicKey(treasury.solana), lamports }));
+      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
+      transaction.recentBlockhash = blockhash;
+      transaction.lastValidBlockHeight = lastValidBlockHeight;
+      transaction.feePayer = walletPublicKey;
+      const signed = await provider.signAndSendTransaction(transaction);
+      await connection.confirmTransaction({ signature: signed.signature, blockhash, lastValidBlockHeight }, 'confirmed');
       notify(`SOL transferi gönderildi: ${signed.signature.slice(0, 12)}...`);
       return;
     }
@@ -113,6 +136,9 @@ async function buyTokens() {
     notify(`Ödeme gönderildi: ${hash.slice(0, 12)}...`);
   } catch (error) {
     notify(error.message || 'İşlem reddedildi veya ağ bağlantısı başarısız.');
+  } finally {
+    buyButton.disabled = false;
+    buyButton.textContent = 'QMN satın al →';
   }
 }
 document.querySelectorAll('.game-nav button').forEach((button) => button.addEventListener('click', () => showView(button.dataset.view)));
