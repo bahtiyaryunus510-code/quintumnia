@@ -201,8 +201,15 @@ async function buyTokens() {
       transaction.feePayer = walletPublicKey;
       const signed = await provider.signAndSendTransaction(transaction);
       await connection.confirmTransaction({ signature: signed.signature, blockhash, lastValidBlockHeight }, 'confirmed');
-      saveAllocation(walletAddress, amount, amount * getQmnRate(amount), signed.signature);
-      notify(`SOL transferi gönderildi: ${signed.signature.slice(0, 12)}...`);
+      const allocationResponse = await fetch('/api/allocate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ signature: signed.signature, buyer: walletAddress, amount, network: 'devnet' })
+      });
+      const allocation = await allocationResponse.json();
+      if (!allocationResponse.ok) throw new Error(allocation.error || 'QMN dağıtımı tamamlanamadı.');
+      saveAllocation(walletAddress, amount, allocation.qmnAmount, signed.signature);
+      notify(`QMN dağıtıldı: ${allocation.qmnAmount.toLocaleString('tr-TR')} QMN`);
       return;
     }
     const chains = { ethereum: '0x1', bsc: '0x38' };

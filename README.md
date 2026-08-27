@@ -5,7 +5,7 @@ Quintumnia Web3 galactic war oyunu. Solana Devnet üzerinde test tahsisi.
 ## Teknik Özellikler
 
 - **Frontend**: HTML5, CSS3, Vanilla JavaScript
-- **Web3**: Solana Web3.js (Devnet test akışı)
+- **Web3**: Solana Web3.js ve Vercel Serverless Function
 - **Hosting**: Vercel
 
 ## Deploy ve Domain
@@ -48,7 +48,18 @@ vercel domains inspect www.quintumnia.space --token $env:VERCEL_TOKEN
 
 ## Devnet test akışı
 
-Presale arayüzü şu anda yalnızca Solana Devnet üzerinde çalışır. Phantom ile bağlandıktan sonra test SOL transferi onaylanır; cüzdan public adresi, hesaplanan QMN tahsisi, işlem imzası ve 90 günlük claim tarihi tarayıcının `localStorage` alanına kaydedilir. Bu kayıt henüz on-chain presale sözleşmesi değildir ve mainnet fonu kabul edilmez.
+Presale arayüzü Solana Devnet üzerinde çalışır. Phantom ile bağlandıktan sonra SOL transferi onaylanır; `/api/allocate` backend'i işlemi treasury adresine karşı doğrular ve QMN kaynak token hesabından alıcının ATA'sine token gönderir. Tahsis, token transferi başarıyla tamamlandıktan sonra tarayıcının `localStorage` alanına kaydedilir.
+
+## Backend kurulumu
+
+```powershell
+npm install
+vercel env add QMN_AUTHORITY_SECRET_KEY production
+vercel env add QMN_SOURCE_TOKEN_ACCOUNT production
+vercel env add ENABLE_MAINNET_ALLOCATIONS production
+```
+
+`QMN_AUTHORITY_SECRET_KEY`, QMN kaynak token hesabının sahibi olan treasury keypair'inin JSON secret-key dizisidir. Bu değeri frontend'e, Git'e veya sohbet mesajına koymayın. `QMN_SOURCE_TOKEN_ACCOUNT`, ilgili ağdaki QMN token hesabıdır. Mainnet için `ENABLE_MAINNET_ALLOCATIONS` yalnızca dağıtım hesabı ve testleri doğrulandıktan sonra `true` yapılmalıdır; varsayılan değer `false`'dur.
 
 ## Lisans
 
