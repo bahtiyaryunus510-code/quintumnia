@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Push Quintumnia Phantom fix",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"push",
+				"origin",
+				"HEAD:main"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}
