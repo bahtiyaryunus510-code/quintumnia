@@ -20,10 +20,14 @@ function mountTierAndLaunchpad() {
 }
 const treasury = {
   solana: '956WKowgGxqkZAU6bN9fvkhZvtbtexXxUPUjrKdFU7dJ',
-  mainnet: 'CxGRzBk4H4RovCuJUt82kmMnVUkww1yjKdo1j1ajDnhv',
+  mainnet: '956WKowgGxqkZAU6bN9fvkhZvtbtexXxUPUjrKdFU7dJ',
   evm: '0xbBc387A6F5F985DCD52348137539D144b17c3f94'
 };
-const qmnMintAddress = 'F6AVJ1wtj6BfTAU7qmoaN2f7FPGusifhgr2Sr9sDYqe7';
+const qmnMints = {
+  devnet: 'F6AVJ1wtj6BfTAU7qmoaN2f7FPGusifhgr2Sr9sDYqe7',
+  mainnet: 'CsQr1Uu3TcWp9poQtVa8JSJm5xnsPjomBiTPznpFtaoQ'
+};
+const qmnMintAddress = qmnMints.devnet;
 const devnetWalletAddress = '6oy6eGmifqAZsUw68hBM4n8bKev6RzH8ZCy95RQa1pwg';
 const usdtContracts = {
   ethereum: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
