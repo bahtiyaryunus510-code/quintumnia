@@ -94,7 +94,12 @@ function loadSolanaWeb3() {
     const bufferScript = document.createElement('script');
     bufferScript.src = 'https://unpkg.com/buffer@6.0.3/index.js';
     bufferScript.onload = () => {
-      if (!window.Buffer && window.buffer?.Buffer) window.Buffer = window.buffer.Buffer;
+      const browserBuffer = window.buffer?.Buffer;
+      if (typeof browserBuffer?.from !== 'function') {
+        reject(new Error('Solana tarayıcı Buffer desteği geçersiz.'));
+        return;
+      }
+      window.Buffer = browserBuffer;
       const script = document.createElement('script');
       script.src = 'https://unpkg.com/@solana/web3.js@1.95.3/lib/index.iife.min.js';
       script.onload = () => resolve(window.solanaWeb3);
