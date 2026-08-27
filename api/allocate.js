@@ -18,12 +18,14 @@ const CONFIG = {
   devnet: {
     rpc: process.env.SOLANA_DEVNET_RPC || 'https://api.devnet.solana.com',
     mint: 'F6AVJ1wtj6BfTAU7qmoaN2f7FPGusifhgr2Sr9sDYqe7',
-    treasury: '956WKowgGxqkZAU6bN9fvkhZvtbtexXxUPUjrKdFU7dJ'
+    treasury: '956WKowgGxqkZAU6bN9fvkhZvtbtexXxUPUjrKdFU7dJ',
+    sourceEnv: 'QMN_DEVNET_SOURCE_TOKEN_ACCOUNT'
   },
   mainnet: {
     rpc: process.env.SOLANA_MAINNET_RPC || 'https://api.mainnet-beta.solana.com',
     mint: 'CsQr1Uu3TcWp9poQtVa8JSJm5xnsPjomBiTPznpFtaoQ',
-    treasury: '956WKowgGxqkZAU6bN9fvkhZvtbtexXxUPUjrKdFU7dJ'
+    treasury: '956WKowgGxqkZAU6bN9fvkhZvtbtexXxUPUjrKdFU7dJ',
+    sourceEnv: 'QMN_MAINNET_SOURCE_TOKEN_ACCOUNT'
   }
 };
 const TOKEN_DECIMALS = 9;
@@ -82,8 +84,8 @@ module.exports = async function handler(request, response) {
     }
 
     const mint = new PublicKey(config.mint);
-    const source = process.env.QMN_SOURCE_TOKEN_ACCOUNT;
-    if (!source) return fail(response, 503, 'QMN_SOURCE_TOKEN_ACCOUNT ayarlanmamış.');
+    const source = process.env[config.sourceEnv];
+    if (!source) return fail(response, 503, `${config.sourceEnv} ayarlanmamış.`);
     const sourceAccount = await getAccount(connection, new PublicKey(source), 'confirmed', TOKEN_PROGRAM_ID);
     if (!sourceAccount.owner.equals(authority.publicKey)) return fail(response, 500, 'QMN kaynak hesabı authority ile eşleşmiyor.');
     const rawAmount = getRawTokenAmount(solAmount);
