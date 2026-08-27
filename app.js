@@ -90,12 +90,11 @@ async function getSolanaConnection() {
 
 function loadSolanaWeb3() {
   if (window.solanaWeb3) return Promise.resolve(window.solanaWeb3);
-  return new Promise((resolve, reject) => {
-    const bufferScript = document.createElement('script');
-    bufferScript.src = 'https://unpkg.com/buffer@6.0.3/index.js';
-    bufferScript.onload = () => {
-      const browserBuffer = window.buffer?.Buffer;
-      if (typeof browserBuffer?.from !== 'function') {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const bufferModule = await import('https://esm.sh/buffer@6.0.3?target=es2020');
+      const browserBuffer = bufferModule.Buffer || bufferModule.default?.Buffer || bufferModule.default;
+      if (typeof browserBuffer !== 'function' || typeof browserBuffer.from !== 'function') {
         reject(new Error('Solana tarayıcı Buffer desteği geçersiz.'));
         return;
       }
@@ -105,9 +104,9 @@ function loadSolanaWeb3() {
       script.onload = () => resolve(window.solanaWeb3);
       script.onerror = () => reject(new Error('Solana istemcisi yüklenemedi.'));
       document.head.appendChild(script);
-    };
-    bufferScript.onerror = () => reject(new Error('Solana tarayıcı desteği yüklenemedi.'));
-    document.head.appendChild(bufferScript);
+    } catch (error) {
+      reject(new Error(`Solana tarayıcı desteği yüklenemedi: ${error.message}`));
+    }
   });
 }
 
