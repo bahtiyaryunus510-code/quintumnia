@@ -9,7 +9,7 @@ const saleEndsAt = Date.now() + 90 * 24 * 60 * 60 * 1000;
 function mountTierAndLaunchpad() {
   const section = document.createElement('section');
   section.className = 'tier-launchpad';
-  section.innerHTML = `<div class="tier-title"><small>02 / ERKEN KAŞİF TIER'LARI</small><h2>Daha erken gir, daha çok keşfet.</h2></div><div class="tier-grid"><article class="tier-card"><small>ROOKIE</small><b>0.1+ SOL</b><span>10,000 QMN / SOL</span><p>Başlangıç rozeti ve galaksi haritası erişimi.</p><button data-tier="Rookie">Tier'ı seç</button></article><article class="tier-card featured"><em>EN ÇOK TERCİH EDİLEN</em><small>EXPLORER</small><b>1+ SOL</b><span>11,000 QMN / SOL</span><p>%10 bonus QMN ve özel UFO kaplaması.</p><button data-tier="Explorer">Tier'ı seç</button></article><article class="tier-card"><small>COMMANDER</small><b>5+ SOL</b><span>12,500 QMN / SOL</span><p>%25 bonus, Jupiter çekirdeği ve erken erişim.</p><button data-tier="Commander">Tier'ı seç</button></article></div><div class="launchpad-head"><div><small>03 / QUINTUMNIA LAUNCHPAD</small><h2>Galaksinin yeni projeleri.</h2></div><button id="submitProject">Proje gönder +</button></div><div class="launch-list"><article><span class="project-icon">◈</span><div><b>Moon Miner</b><small>$MOON · HAZİNE AVCISI</small></div><strong>Başlıyor</strong><button data-project="Moon Miner">İncele →</button></article><article><span class="project-icon orange-icon">✦</span><div><b>Jupiter Junkies</b><small>$JUNK · SAVAŞ FİLOSU</small></div><strong>Yakında</strong><button data-project="Jupiter Junkies">İncele →</button></article></div>`;
+  section.innerHTML = `<div class="tier-title"><small>02 / ERKEN KAŞİF TIER'LARI</small><h2>Daha erken gir, daha çok keşfet.</h2></div><div class="tier-grid"><article class="tier-card"><small>ROOKIE</small><b>0.1+ SOL</b><span>9,950 QMN / SOL</span><p>Başlangıç rozeti ve galaksi haritası erişimi.</p><button data-tier="Rookie">Tier'ı seç</button></article><article class="tier-card featured"><em>EN ÇOK TERCİH EDİLEN</em><small>EXPLORER</small><b>1+ SOL</b><span>9,950 QMN / SOL</span><p>Başlangıç fiyatı ve özel UFO kaplaması.</p><button data-tier="Explorer">Tier'ı seç</button></article><article class="tier-card"><small>COMMANDER</small><b>10+ SOL</b><span>9,000 QMN / SOL</span><p>Sonraki satış aşamasında artan fiyat uygulanır.</p><button data-tier="Commander">Tier'ı seç</button></article></div><div class="launchpad-head"><div><small>03 / QUINTUMNIA LAUNCHPAD</small><h2>Galaksinin yeni projeleri.</h2></div><button id="submitProject">Proje gönder +</button></div><div class="launch-list"><article><span class="project-icon">◈</span><div><b>Moon Miner</b><small>$MOON · HAZİNE AVCISI</small></div><strong>Başlıyor</strong><button data-project="Moon Miner">İncele →</button></article><article><span class="project-icon orange-icon">✦</span><div><b>Jupiter Junkies</b><small>$JUNK · SAVAŞ FİLOSU</small></div><strong>Yakında</strong><button data-project="Jupiter Junkies">İncele →</button></article></div>`;
   document.querySelector('#top').before(section);
   const style = document.createElement('style');
   style.textContent = `.tier-launchpad{padding:48px 5vw;background:#101419;color:#f1f2ed}.tier-title h2,.launchpad-head h2{font-size:28px;margin:8px 0 22px}.tier-title small,.launchpad-head small{font:10px 'DM Mono';color:#8994a0}.tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.tier-card{position:relative;padding:20px;border:1px solid #303b46;background:#171d24}.tier-card.featured{border-color:#c9f35a}.tier-card em{position:absolute;right:12px;top:12px;color:#c9f35a;font:9px 'DM Mono';font-style:normal}.tier-card small{display:block;color:#ff7350;font:10px 'DM Mono'}.tier-card>b{display:block;font-size:27px;margin:15px 0 4px}.tier-card span{font:11px 'DM Mono';color:#c9f35a}.tier-card p{min-height:32px;color:#8994a0;font-size:11px;line-height:1.5}.tier-card button,.launchpad-head button{padding:10px 12px;border:1px solid #c9f35a;background:transparent;color:#c9f35a;font-size:11px}.launchpad-head{display:flex;justify-content:space-between;align-items:end;margin-top:50px}.launch-list{border-top:1px solid #303b46}.launch-list article{display:grid;grid-template-columns:42px 1fr 90px 80px;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid #303b46}.project-icon{display:grid;place-items:center;width:34px;height:34px;background:#c9f35a;color:#101419;font-size:20px}.orange-icon{background:#ff7350}.launch-list b{display:block}.launch-list small{display:block;color:#8994a0;font:9px 'DM Mono';margin-top:4px}.launch-list strong{color:#ff7350;font:10px 'DM Mono'}.launch-list button{border:0;background:none;color:#c9f35a;font-size:11px}@media(max-width:700px){.tier-launchpad{padding:35px 20px}.tier-grid{grid-template-columns:1fr}.launchpad-head{align-items:start;gap:15px;flex-direction:column}.launch-list article{grid-template-columns:38px 1fr 70px}.launch-list button{grid-column:2}.tier-card p{min-height:0}}`;
@@ -19,13 +19,75 @@ function mountTierAndLaunchpad() {
   $('#submitProject').addEventListener('click', () => notify('Proje başvuru formu yakında açılacak.'));
 }
 const treasury = {
-  solana: 'SoEitwJCg9GrCnyda8vE1m2nvK4nWTWtCnsojvz7ZT',
+  solana: '956WKowgGxqkZAU6bN9fvkhZvtbtexXxUPUjrKdFU7dJ',
+  mainnet: 'CxGRzBk4H4RovCuJUt82kmMnVUkww1yjKdo1j1ajDnhv',
   evm: '0xbBc387A6F5F985DCD52348137539D144b17c3f94'
 };
+const qmnMintAddress = 'F6AVJ1wtj6BfTAU7qmoaN2f7FPGusifhgr2Sr9sDYqe7';
+const devnetWalletAddress = '6oy6eGmifqAZsUw68hBM4n8bKev6RzH8ZCy95RQa1pwg';
 const usdtContracts = {
   ethereum: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
   bsc: '0x55d398326f99059fF775485246999027B3197955'
 };
+const solanaRpcUrls = [
+  'https://api.devnet.solana.com'
+];
+const presaleTiers = [
+  { minimum: 0.1, rate: 9950 },
+  { minimum: 10.01, rate: 9000 }
+];
+
+function getQmnRate(amount) {
+  return [...presaleTiers].reverse().find((tier) => amount >= tier.minimum)?.rate || presaleTiers[0].rate;
+}
+
+function updatePurchaseQuote() {
+  const amount = Number($('#amount').value);
+  const quote = $('#purchaseQuote');
+  if (!quote || !Number.isFinite(amount) || amount < 0.1) {
+    if (quote) quote.textContent = 'Minimum alım: 0,1 SOL';
+    return;
+  }
+  const rate = getQmnRate(amount);
+  quote.textContent = `${amount.toLocaleString('tr-TR')} SOL = ${(amount * rate).toLocaleString('tr-TR')} QMN (${rate.toLocaleString('tr-TR')} QMN/SOL)`;
+}
+
+function getAllocations() {
+  try {
+    return JSON.parse(localStorage.getItem('qmnDevnetAllocations') || '[]');
+  } catch {
+    return [];
+  }
+}
+
+function saveAllocation(address, amount, qmnAmount, signature) {
+  const allocations = getAllocations();
+  allocations.push({ address, amount, qmnAmount, signature, claimAt: Date.now() + 90 * 24 * 60 * 60 * 1000 });
+  localStorage.setItem('qmnDevnetAllocations', JSON.stringify(allocations));
+  renderAllocations();
+}
+
+function renderAllocations() {
+  const list = $('#allocationList');
+  if (!list) return;
+  const allocations = getAllocations();
+  list.innerHTML = allocations.length ? allocations.map((allocation) => `<div><b>${allocation.address.slice(0, 6)}...${allocation.address.slice(-4)}</b><span>${allocation.qmnAmount.toLocaleString('tr-TR')} QMN · Claim: ${new Date(allocation.claimAt).toLocaleDateString('tr-TR')}</span></div>`).join('') : '<span>Henüz devnet tahsisi yok.</span>';
+}
+
+async function getSolanaConnection() {
+  await loadSolanaWeb3();
+  for (const rpcUrl of solanaRpcUrls) {
+    const connection = new solanaWeb3.Connection(rpcUrl, 'confirmed');
+    try {
+      await connection.getEpochInfo();
+      return connection;
+    } catch (error) {
+      console.warn(`Solana RPC kullanılamadı: ${rpcUrl}`, error);
+    }
+  }
+  throw new Error('Solana ağına erişilemedi. RPC sağlayıcıları şu anda yanıt vermiyor.');
+}
+
 function loadSolanaWeb3() {
   if (window.solanaWeb3) return Promise.resolve(window.solanaWeb3);
   return new Promise((resolve, reject) => {
@@ -98,7 +160,8 @@ async function buyTokens() {
   const asset = $('#asset').value;
   const amount = Number($('#amount').value);
   const buyButton = $('#buyButton');
-  if (!Number.isFinite(amount) || amount < 0.01) return notify('En az 0.01 ödeme birimi gir.');
+  if (network !== 'solana') return notify('Bu sayfa yalnızca Solana Devnet testi içindir.');
+  if (!Number.isFinite(amount) || amount < 0.1) return notify('En az 0,1 SOL gir.');
   buyButton.disabled = true;
   buyButton.textContent = 'İşlem bekleniyor...';
   const key = walletPublicKey || await connectWallet();
@@ -109,10 +172,9 @@ async function buyTokens() {
   }
   try {
     if (network === 'solana') {
-      await loadSolanaWeb3();
       const provider = window.phantom?.solana || window.solana;
       if (!provider?.isPhantom || !walletPublicKey?.toBase58) throw new Error('Önce Phantom cüzdanını bağla.');
-      const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'), 'confirmed');
+      const connection = await getSolanaConnection();
       const lamports = Math.round(amount * solanaWeb3.LAMPORTS_PER_SOL);
       const balance = await connection.getBalance(walletPublicKey);
       const feeBuffer = 5000;
@@ -124,6 +186,7 @@ async function buyTokens() {
       transaction.feePayer = walletPublicKey;
       const signed = await provider.signAndSendTransaction(transaction);
       await connection.confirmTransaction({ signature: signed.signature, blockhash, lastValidBlockHeight }, 'confirmed');
+      saveAllocation(walletAddress, amount, amount * getQmnRate(amount), signed.signature);
       notify(`SOL transferi gönderildi: ${signed.signature.slice(0, 12)}...`);
       return;
     }
@@ -151,9 +214,10 @@ document.querySelectorAll('.planet-node').forEach((node) => node.addEventListene
 }));
 $('#connectWallet').addEventListener('click', connectWallet);
 $('#buyButton').addEventListener('click', buyTokens);
+$('#amount').addEventListener('input', updatePurchaseQuote);
 $('#network').addEventListener('change', () => {
   const network = $('#network').value;
-  $('#asset').innerHTML = network === 'solana' ? '<option value="SOL">SOL</option>' : network === 'ethereum' ? '<option value="ETH">ETH</option><option value="USDT">USDT</option>' : '<option value="BNB">BNB</option><option value="USDT">USDT</option>';
+  $('#asset').innerHTML = '<option value="SOL">SOL</option>';
   walletPublicKey = null;
   $('#connectWallet').textContent = 'Cüzdan bağla';
   $('#walletStatus').textContent = 'Cüzdan bağlı değil';
@@ -203,4 +267,4 @@ document.querySelectorAll('.build-button').forEach((button) => button.addEventLi
 }));
 $('#digButton').addEventListener('click', () => { const reward = 25 + Math.floor(Math.random() * 35); crystals += reward; updateResource(); notify(`Kazı tamamlandı: +${reward} kristal.`); });
 setInterval(updateCountdown, 1000); setInterval(() => { if (energy < 86) { energy += 1; updateResource(); } }, 2200);
-mountTierAndLaunchpad(); updateCountdown(); updateResource();
+mountTierAndLaunchpad(); updateCountdown(); updateResource(); updatePurchaseQuote(); renderAllocations(); $('#qmnMintAddress').textContent = qmnMintAddress;

@@ -1,11 +1,11 @@
 # Quintumnia - Web3 Galactic War
 
-Quintumnia Web3 galactic war oyunu. ETH, USDT veya BNB ile ön satış.
+Quintumnia Web3 galactic war oyunu. Solana Devnet üzerinde test tahsisi.
 
 ## Teknik Özellikler
 
 - **Frontend**: HTML5, CSS3, Vanilla JavaScript
-- **Web3**: Solana Web3.js, MetaMask (EVM)
+- **Web3**: Solana Web3.js (Devnet test akışı)
 - **Hosting**: Vercel
 
 ## Deploy ve Domain
@@ -44,7 +44,11 @@ vercel domains inspect www.quintumnia.space --token $env:VERCEL_TOKEN
 - ⌂ Üssüm yönetimi
 - ▦ Hazine sandığı
 - QMN token ön satışı
-- Solana/Ethereum/BNB desteği
+- Solana Devnet tahsis testi
+
+## Devnet test akışı
+
+Presale arayüzü şu anda yalnızca Solana Devnet üzerinde çalışır. Phantom ile bağlandıktan sonra test SOL transferi onaylanır; cüzdan public adresi, hesaplanan QMN tahsisi, işlem imzası ve 90 günlük claim tarihi tarayıcının `localStorage` alanına kaydedilir. Bu kayıt henüz on-chain presale sözleşmesi değildir ve mainnet fonu kabul edilmez.
 
 ## Lisans
 
