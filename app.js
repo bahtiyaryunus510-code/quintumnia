@@ -91,11 +91,18 @@ async function getSolanaConnection() {
 function loadSolanaWeb3() {
   if (window.solanaWeb3) return Promise.resolve(window.solanaWeb3);
   return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/@solana/web3.js@1.95.3/lib/index.iife.min.js';
-    script.onload = () => resolve(window.solanaWeb3);
-    script.onerror = () => reject(new Error('Solana istemcisi yüklenemedi.'));
-    document.head.appendChild(script);
+    const bufferScript = document.createElement('script');
+    bufferScript.src = 'https://unpkg.com/buffer@6.0.3/index.js';
+    bufferScript.onload = () => {
+      if (!window.Buffer && window.buffer?.Buffer) window.Buffer = window.buffer.Buffer;
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/@solana/web3.js@1.95.3/lib/index.iife.min.js';
+      script.onload = () => resolve(window.solanaWeb3);
+      script.onerror = () => reject(new Error('Solana istemcisi yüklenemedi.'));
+      document.head.appendChild(script);
+    };
+    bufferScript.onerror = () => reject(new Error('Solana tarayıcı desteği yüklenemedi.'));
+    document.head.appendChild(bufferScript);
   });
 }
 
