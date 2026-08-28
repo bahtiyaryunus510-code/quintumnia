@@ -206,11 +206,11 @@ function updateCountdown() {
 }
 function replaceLegacyCopy() {
   const replacements = new Map([
-    ['Memelerin yörüngesi.', 'Kuantum odaklı projeler'],
-    ['Galaksinin yeni çağı.', 'Yeni nesil ön satışlar'],
-    ["Bir meme coin'den", 'Kuantum projeleri.'],
-    ['çok daha fazlası.', 'Seçkin refund modeli'],
-    ['yeni meme filoları.', 'refund modeli incelemesi.'],
+    ['Memelerin yörüngesi.', 'Quantum-focused projects'],
+    ['Galaksinin yeni çağı.', 'Next-generation presales'],
+    ["Bir meme coin'den", 'Quantum Projects'],
+    ['çok daha fazlası.', 'Selected refund model'],
+    ['yeni meme filoları.', 'refund model review'],
     ['TAKE ME', 'QUANTUM']
   ]);
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
