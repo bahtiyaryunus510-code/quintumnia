@@ -1,5 +1,63 @@
 const $ = (selector) => document.querySelector(selector);
 const toast = $('#toast');
+let language = 'en';
+const textTranslations = {
+  'SEZON 01': 'SEASON 01', 'Komutan': 'Commander', 'Oyuna katıl, QMN al.': 'Join the game, get QMN.',
+  'Ön satış 3 ay açık. ETH, USDT veya BNB ile cüzdan imzasıyla ödeme yap.': 'Presale is open for 3 months. Pay with ETH, USDT or BNB using your wallet signature.',
+  'ÖN SATIŞ BİTİŞİ': 'PRESALE ENDS', '90 GÜN': '90 DAYS', 'Cüzdan bağla': 'Connect wallet', 'Çıkış yap': 'Disconnect',
+  'Cüzdan bağlı değil': 'Wallet not connected', 'Bağlandı:': 'Connected:', 'Cüzdan bağlandı. Satın alma işlemi için miktar gir.': 'Wallet connected. Enter an amount to purchase.',
+  'Cüzdan bağlantısı iptal edildi.': 'Wallet connection was cancelled.', 'Phantom bulunamadı.': 'Phantom was not found.', 'MetaMask bulunamadı.': 'MetaMask was not found.',
+  'Galaksi haritası': 'Galaxy map', 'UFO hangarı': 'UFO hangar', 'Üssüm': 'My base', 'Hazine sandığı': 'Treasure chest',
+  'Galaksiye hükmet.': 'Rule the galaxy.', 'Göreve git': 'Go to mission', 'Gezegenlerini seç.': 'Choose your planet.',
+  'Keşfedildi': 'Discovered', 'Savaş alanı': 'Battle zone', 'Kilitli': 'Locked', 'UFO ile git': 'Travel by UFO',
+  'Düşman filosu algılandı.': 'Enemy fleet detected.', 'Geri dön': 'Return', 'LAZERİ ATEŞLE ✦': 'FIRE LASER ✦',
+  'UFO hangarın.': 'Your UFO hangar.', 'Üssünü büyüt.': 'Expand your base.', 'Kazdığın ganimetler.': 'Your excavated loot.',
+  'Yeni kazı başlat ✦': 'Start new excavation ✦', 'QMN satın al →': 'Buy QMN →', 'İşlem bekleniyor...': 'Transaction pending...',
+  'Minimum alım: 0,1 SOL': 'Minimum purchase: 0.1 SOL', 'TAHSİS KAYITLARI': 'ALLOCATION RECORDS', 'OYUNCU 001': 'PLAYER 001',
+  'KAYNAKLAR': 'RESOURCES', 'Kristal': 'Crystal', 'Metal': 'Metal', 'Enerji': 'Energy', 'Fotoğrafı alien\'a çevir': 'Turn photo into alien',
+  'Memelerin yörüngesi.': 'Memes in orbit.', 'Galaksinin yeni çağı.': 'The galaxy\'s new age.', 'UFO filonu kur, QMN ekonomisine katıl ve topluluğun seçtiği yeni galaktik projeleri keşfet.': 'Build your UFO fleet, join the QMN economy and discover new galactic projects chosen by the community.',
+  'topluluk rotası': 'community route', 'çok daha fazlası.': 'so much more.', 'Body Bushman General Komutan komutasında; topluluk, oyun ve galaktik ekonomi tek bir neon cephede buluşuyor.': 'Under General Body Bushman, community, gaming and the galactic economy meet on one neon front.',
+  '◆ TOPLULUK GÜCÜ': '◆ COMMUNITY POWER', '✦ OYUN EVRENİ': '✦ GAME UNIVERSE', '⌁ UFO FİLOSU': '⌁ UFO FLEET',
+  '01 / QMN DEVNET TEST SATIŞI': '01 / QMN DEVNET TEST SALE', '0,1 SOL = 995 QMN. Fiyat arttıkça aynı SOL karşılığında daha az QMN tahsis edilir.': '0.1 SOL = 995 QMN. As the price increases, the same SOL amount allocates fewer QMN.',
+  'SÜRE KALANI': 'TIME LEFT', 'GÜN': 'DAYS', 'DAKİKA': 'MINUTES', 'SANİYE': 'SECONDS', 'QMN TAHSİSİ': 'QMN ALLOCATION', 'Solana Mainnet': 'Solana Mainnet', 'Solana Devnet (test)': 'Solana Devnet (test)', 'Henüz tahsis yok.': 'No allocations yet.',
+  'adım adım yüksel.': 'rise step by step.', 'Quintumnia, oyun ve token ekonomisini aynı yörüngede büyüten topluluk odaklı bir evren.': 'Quintumnia is a community-driven universe growing gaming and token economics in the same orbit.', 'ŞİMDİ': 'NOW', 'QMN ön satışı, cüzdan bağlantısı ve ilk topluluk projeleri.': 'QMN presale, wallet connection and first community projects.', 'AKTİF': 'ACTIVE', 'SONRAKİ SEKTÖR': 'NEXT SECTOR', 'Topluluk seçimi, proje başvuruları ve yeni meme filoları.': 'Community voting, project submissions and new meme fleets.', 'OYUN EVRENİ': 'GAME UNIVERSE', 'Galactic War genişlemesi': 'Galactic War expansion', 'Yeni gezegenler, filo görevleri, sezon ödülleri ve oyuncu ekonomisi.': 'New planets, fleet missions, season rewards and player economy.',
+  'QMN için planlanan listeler': 'Planned QMN listings', 'Listeleme tarihleri resmi kanallardan duyurulacaktır. Bu alan söylenti değil, takip panosudur.': 'Listing dates will be announced through official channels. This is a tracker, not a rumor board.', 'Takvim açıklanacak': 'Schedule to be announced', 'Solana ve EVM DEX rotası': 'Solana and EVM DEX route', 'Likidite hazırlığı': 'Liquidity preparation', 'Quintumnia topluluk pazarı': 'Quintumnia community market',
+  '02 / ERKEN KAŞİF TIER\'LARI': '02 / EARLY EXPLORER TIERS', 'Daha erken gir, daha çok keşfet.': 'Enter early, explore more.', 'Başlangıç rozeti ve galaksi haritası erişimi.': 'Starter badge and galaxy map access.', 'Tier\'ı seç': 'Choose tier', 'EN ÇOK TERCİH EDİLEN': 'MOST POPULAR', 'Başlangıç fiyatı ve özel UFO kaplaması.': 'Early pricing and an exclusive UFO skin.', 'Sonraki satış aşamasında artan fiyat uygulanır.': 'Higher pricing applies in the next sale phase.', 'Proje gönder +': 'Submit project +', '$MOON · HAZİNE AVCISI': '$MOON · TREASURE HUNTER', 'Başlıyor': 'Launching', 'İncele →': 'Explore →', '$JUNK · SAVAŞ FİLOSU': '$JUNK · BATTLE FLEET', 'Yakında': 'Coming soon',
+  'SEKTÖR 07 / ANDROMEDA SINIRI': 'SECTOR 07 / ANDROMEDA FRONTIER', 'AKTİF GÖREV / SAVAŞ': 'ACTIVE MISSION / BATTLE', 'Jupiter yörüngesini düşmanlardan temizle': 'Clear Jupiter orbit of enemies', '3 dalga kaldı · Ödül: 80 kristal + Jupiter çekirdeği': '3 waves left · Reward: 80 crystal + Jupiter core', '02 / KEŞİF ROTASI': '02 / EXPLORATION ROUTE', 'Dünya': 'Earth', 'ÜSSÜN': 'YOUR BASE', 'KEŞFEDİLDİ': 'DISCOVERED', 'SAVAŞ ALANI': 'BATTLE ZONE', 'LVL 10 GEREKLİ': 'LVL 10 REQUIRED', 'SEÇİLİ GEZEGEN': 'SELECTED PLANET', 'Üssün burada. Filonu hazırla ve savaşa kat.': 'Your base is here. Prepare your fleet and join the battle.', 'JUPITER YÖRÜNGESİ / SAVAŞ': 'JUPITER ORBIT / BATTLE', 'ENERJİ': 'ENERGY', '03 / FİLO': '03 / FLEET', 'Hızlı keşif gemisi · Aktif': 'Fast scout ship · Active', 'Seçili gemi ✓': 'Selected ship ✓', 'Savaş sınıfı · Kilitli': 'Battle class · Locked', 'Kilidi aç · 180 ◆': 'Unlock · 180 ◆', '04 / İNŞAAT': '04 / CONSTRUCTION', 'Kristal üretimini hızlandırır.': 'Accelerates crystal production.', 'İnşa et · 80 ◆': 'Build · 80 ◆', 'Üssünü korur.': 'Protect your base.', 'İnşa et · 160 ◆': 'Build · 160 ◆', '05 / HAZİNE': '05 / TREASURE', 'Kristal çekirdeği': 'Crystal core', 'Ay taşı': 'Moonstone', 'Antik parça': 'Ancient fragment',
+  'Memelerin yörüngesi.': 'Quantum-focused projects.',
+  'Galaksinin yeni çağı.': 'Next-generation presales.',
+  'UFO filonu kur, QMN ekonomisine katıl ve topluluğun seçtiği yeni galaktik projeleri keşfet.': 'Quintumnia brings community-selected quantum-focused projects and ventures with a special refund model to presale.',
+  'çok daha fazlası.': 'Selected refund model.',
+  'Body Bushman General Komutan komutasında; topluluk, oyun ve galaktik ekonomi tek bir neon cephede buluşuyor.': 'Quantum-focused projects with a specially selected refund model will be offered for presale on Quintumnia after a transparent review.',
+  '◆ TOPLULUK GÜCÜ': '◆ QUANTUM FOCUS',
+  '✦ OYUN EVRENİ': '✦ SELECTED PROJECTS',
+  '⌁ UFO FİLOSU': '⌁ SPECIAL REFUND MODEL',
+  'Topluluk seçimi, proje başvuruları ve yeni meme filoları.': 'Community selection, project submissions and refund model review.',
+  'TAKE ME\nTO THE MOON': 'QUANTUM\nIN ORBIT'
+};
+function translateText(text) {
+  const value = text.trim();
+  if (!value) return text;
+  const localizedOverrides = {
+    'Quantum-focused projects.': 'Kuantum odaklı projeler.',
+    'Next-generation presales.': 'Yeni nesil ön satışlar.',
+    'Selected refund model.': 'Seçkin refund modeli.',
+    'QUANTUM\nIN ORBIT': 'KUANTUM\nYÖRÜNGEDE'
+  };
+  const translated = language === 'tr' ? localizedOverrides[value] || Object.entries(textTranslations).find(([, english]) => english === value)?.[0] : textTranslations[value];
+  return translated ? text.replace(value, translated) : text;
+}
+function applyLanguage() {
+  document.documentElement.lang = language;
+  document.querySelectorAll('[data-language]').forEach((button) => button.classList.toggle('active', button.dataset.language === language));
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  while (walker.nextNode()) walker.currentNode.textContent = translateText(walker.currentNode.textContent);
+  updateCountdown();
+  updatePurchaseQuote();
+}
+function text(key) {
+  return language === 'tr' ? key : textTranslations[key] || key;
+}
 let crystals = 248;
 let enemies = 5;
 let energy = 65;
@@ -27,15 +85,13 @@ const qmnMints = {
   devnet: 'F6AVJ1wtj6BfTAU7qmoaN2f7FPGusifhgr2Sr9sDYqe7',
   mainnet: 'CsQr1Uu3TcWp9poQtVa8JSJm5xnsPjomBiTPznpFtaoQ'
 };
-const qmnMintAddress = qmnMints.devnet;
+let qmnMintAddress = qmnMints.mainnet;
 const devnetWalletAddress = '6oy6eGmifqAZsUw68hBM4n8bKev6RzH8ZCy95RQa1pwg';
 const usdtContracts = {
   ethereum: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
   bsc: '0x55d398326f99059fF775485246999027B3197955'
 };
-const solanaRpcUrls = [
-  'https://api.devnet.solana.com'
-];
+let solanaRpcUrls = ['https://api.mainnet-beta.solana.com'];
 const presaleTiers = [
   { minimum: 0.1, rate: 9950 },
   { minimum: 10.01, rate: 9000 }
@@ -53,29 +109,31 @@ function updatePurchaseQuote() {
     return;
   }
   const rate = getQmnRate(amount);
-  quote.textContent = `${amount.toLocaleString('tr-TR')} SOL = ${(amount * rate).toLocaleString('tr-TR')} QMN (${rate.toLocaleString('tr-TR')} QMN/SOL)`;
+  const locale = language === 'tr' ? 'tr-TR' : 'en-US';
+  quote.textContent = `${amount.toLocaleString(locale)} SOL = ${(amount * rate).toLocaleString(locale)} QMN (${rate.toLocaleString(locale)} QMN/SOL)`;
 }
 
-function getAllocations() {
+function getAllocations(network = $('#network')?.value || 'mainnet') {
   try {
-    return JSON.parse(localStorage.getItem('qmnDevnetAllocations') || '[]');
+    return JSON.parse(localStorage.getItem(`qmnAllocations:${network}`) || '[]');
   } catch {
     return [];
   }
 }
 
-function saveAllocation(address, amount, qmnAmount, signature) {
-  const allocations = getAllocations();
+function saveAllocation(address, amount, qmnAmount, signature, network) {
+  const allocations = getAllocations(network);
   allocations.push({ address, amount, qmnAmount, signature, claimAt: Date.now() + 90 * 24 * 60 * 60 * 1000 });
-  localStorage.setItem('qmnDevnetAllocations', JSON.stringify(allocations));
+  localStorage.setItem(`qmnAllocations:${network}`, JSON.stringify(allocations));
   renderAllocations();
 }
 
 function renderAllocations() {
   const list = $('#allocationList');
   if (!list) return;
-  const allocations = getAllocations();
-  list.innerHTML = allocations.length ? allocations.map((allocation) => `<div><b>${allocation.address.slice(0, 6)}...${allocation.address.slice(-4)}</b><span>${allocation.qmnAmount.toLocaleString('tr-TR')} QMN · Claim: ${new Date(allocation.claimAt).toLocaleDateString('tr-TR')}</span></div>`).join('') : '<span>Henüz devnet tahsisi yok.</span>';
+  const network = $('#network')?.value || 'mainnet';
+  const allocations = getAllocations(network);
+  list.innerHTML = allocations.length ? allocations.map((allocation) => `<div><b>${allocation.address.slice(0, 6)}...${allocation.address.slice(-4)}</b><span>${allocation.qmnAmount.toLocaleString('tr-TR')} QMN · ${network} · Claim: ${new Date(allocation.claimAt).toLocaleDateString('tr-TR')}</span></div>`).join('') : `<span>${text('Henüz tahsis yok.')}</span>`;
 }
 
 async function getSolanaConnection() {
@@ -139,12 +197,29 @@ function updateCountdown() {
   $('#hours').textContent = Math.floor((seconds % 86400) / 3600).toString().padStart(2, '0');
   $('#minutes').textContent = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
   $('#seconds').textContent = (seconds % 60).toString().padStart(2, '0');
-  $('#saleDate').textContent = `${Math.ceil(seconds / 86400)} GÜN`;
+  $('#saleDate').textContent = `${Math.ceil(seconds / 86400)} ${language === 'tr' ? 'GÜN' : 'DAYS'}`;
+}
+function replaceLegacyCopy() {
+  const replacements = new Map([
+    ['Memelerin yörüngesi.', 'Kuantum odaklı projeler.'],
+    ['Galaksinin yeni çağı.', 'Yeni nesil ön satışlar.'],
+    ["Bir meme coin'den", 'Kuantum projeleri.'],
+    ['çok daha fazlası.', 'Seçkin refund modeli.'],
+    ['yeni meme filoları.', 'refund modeli incelemesi.'],
+    ['TAKE ME', 'QUANTUM']
+  ]);
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  while (walker.nextNode()) {
+    const node = walker.currentNode;
+    replacements.forEach((replacement, legacy) => {
+      if (node.textContent.includes(legacy)) node.textContent = node.textContent.replace(legacy, replacement);
+    });
+  }
 }
 async function connectWallet() {
   const network = $('#network').value;
   try {
-    if (network === 'solana') {
+    if (['mainnet', 'devnet'].includes(network)) {
       const provider = window.phantom?.solana || window.solana;
       if (!provider?.isPhantom) throw new Error('Phantom bulunamadı.');
       const result = await provider.connect();
@@ -158,12 +233,30 @@ async function connectWallet() {
     }
     const address = walletAddress;
     $('#connectWallet').textContent = `${address.slice(0, 5)}...${address.slice(-4)}`;
-    $('#walletStatus').textContent = `Bağlandı: ${address.slice(0, 6)}...${address.slice(-4)}`;
-    notify('Cüzdan bağlandı. Satın alma işlemi için miktar gir.');
+    $('#connectWallet').hidden = true;
+    $('#disconnectWallet').hidden = false;
+    $('#walletStatus').textContent = `${text('Bağlandı:')} ${address.slice(0, 6)}...${address.slice(-4)}`;
+    notify(text('Cüzdan bağlandı. Satın alma işlemi için miktar gir.'));
     return walletPublicKey;
   } catch (error) {
-    notify(error.message || 'Cüzdan bağlantısı iptal edildi.');
+    notify(error.message || text('Cüzdan bağlantısı iptal edildi.'));
     return null;
+  }
+}
+async function disconnectWallet() {
+  try {
+    const provider = window.phantom?.solana || window.solana;
+    if (provider?.disconnect) await provider.disconnect();
+  } catch (error) {
+    console.warn('Wallet disconnect failed', error);
+  } finally {
+    walletPublicKey = null;
+    walletAddress = '';
+    $('#connectWallet').hidden = false;
+    $('#connectWallet').textContent = text('Cüzdan bağla');
+    $('#disconnectWallet').hidden = true;
+    $('#walletStatus').textContent = text('Cüzdan bağlı değil');
+    notify(language === 'tr' ? 'Cüzdan bağlantısı kesildi.' : 'Wallet disconnected.');
   }
 }
 function decimalToBaseUnits(value, decimals) {
@@ -175,7 +268,7 @@ async function buyTokens() {
   const asset = $('#asset').value;
   const amount = Number($('#amount').value);
   const buyButton = $('#buyButton');
-  if (network !== 'solana') return notify('Bu sayfa yalnızca Solana Devnet testi içindir.');
+  if (!['mainnet', 'devnet'].includes(network)) return notify('Yalnızca Solana ağı desteklenir.');
   if (!Number.isFinite(amount) || amount < 0.1) return notify('En az 0,1 SOL gir.');
   buyButton.disabled = true;
   buyButton.textContent = 'İşlem bekleniyor...';
@@ -186,7 +279,7 @@ async function buyTokens() {
     return;
   }
   try {
-    if (network === 'solana') {
+    if (['mainnet', 'devnet'].includes(network)) {
       const provider = window.phantom?.solana || window.solana;
       if (!provider?.isPhantom || !walletPublicKey?.toBase58) throw new Error('Önce Phantom cüzdanını bağla.');
       const connection = await getSolanaConnection();
@@ -204,11 +297,11 @@ async function buyTokens() {
       const allocationResponse = await fetch('/api/allocate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ signature: signed.signature, buyer: walletAddress, amount, network: 'devnet' })
+        body: JSON.stringify({ signature: signed.signature, buyer: walletAddress, amount, network })
       });
       const allocation = await allocationResponse.json();
       if (!allocationResponse.ok) throw new Error(allocation.error || 'QMN dağıtımı tamamlanamadı.');
-      saveAllocation(walletAddress, amount, allocation.qmnAmount, signed.signature);
+      saveAllocation(walletAddress, amount, allocation.qmnAmount, signed.signature, network);
       notify(`QMN dağıtıldı: ${allocation.qmnAmount.toLocaleString('tr-TR')} QMN`);
       return;
     }
@@ -235,14 +328,23 @@ document.querySelectorAll('.planet-node').forEach((node) => node.addEventListene
   $('#planetStatus').textContent = node.dataset.planet === 'Jupiter' ? 'Savaş alanı aktif. Düşman filosu bekliyor.' : `${node.dataset.planet} keşfedildi. Rotanı ayarlamaya hazır.`;
 }));
 $('#connectWallet').addEventListener('click', connectWallet);
+$('#disconnectWallet').addEventListener('click', disconnectWallet);
+$('[data-language="en"]').addEventListener('click', () => { language = 'en'; applyLanguage(); });
+$('[data-language="tr"]').addEventListener('click', () => { language = 'tr'; applyLanguage(); });
 $('#buyButton').addEventListener('click', buyTokens);
 $('#amount').addEventListener('input', updatePurchaseQuote);
 $('#network').addEventListener('change', () => {
   const network = $('#network').value;
   $('#asset').innerHTML = '<option value="SOL">SOL</option>';
+  solanaRpcUrls = [network === 'mainnet' ? 'https://api.mainnet-beta.solana.com' : 'https://api.devnet.solana.com'];
+  qmnMintAddress = qmnMints[network];
+  $('#qmnMintAddress').textContent = qmnMintAddress;
   walletPublicKey = null;
-  $('#connectWallet').textContent = 'Cüzdan bağla';
-  $('#walletStatus').textContent = 'Cüzdan bağlı değil';
+  $('#connectWallet').hidden = false;
+  $('#connectWallet').textContent = text('Cüzdan bağla');
+  $('#disconnectWallet').hidden = true;
+  $('#walletStatus').textContent = text('Cüzdan bağlı değil');
+  renderAllocations();
 });
 $('#missionButton').addEventListener('click', () => { showView('battle'); notify('Savaş alanına giriş yapıldı.'); });
 $('#travelButton').addEventListener('click', () => {
@@ -289,4 +391,4 @@ document.querySelectorAll('.build-button').forEach((button) => button.addEventLi
 }));
 $('#digButton').addEventListener('click', () => { const reward = 25 + Math.floor(Math.random() * 35); crystals += reward; updateResource(); notify(`Kazı tamamlandı: +${reward} kristal.`); });
 setInterval(updateCountdown, 1000); setInterval(() => { if (energy < 86) { energy += 1; updateResource(); } }, 2200);
-mountTierAndLaunchpad(); updateCountdown(); updateResource(); updatePurchaseQuote(); renderAllocations(); $('#qmnMintAddress').textContent = qmnMintAddress;
+mountTierAndLaunchpad(); replaceLegacyCopy(); updateCountdown(); updateResource(); updatePurchaseQuote(); renderAllocations(); $('#qmnMintAddress').textContent = qmnMintAddress; applyLanguage(); replaceLegacyCopy();
