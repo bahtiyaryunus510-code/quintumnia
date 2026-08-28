@@ -35,7 +35,7 @@ const textTranslations = {
   'Topluluk seçimi, proje başvuruları ve yeni meme filoları.': 'Community selection, project submissions and refund model review.',
   'TAKE ME\nTO THE MOON': 'QUANTUM\nIN ORBIT',
   'UFO’dan borsaya,': 'From UFOs to exchanges,',
-  'Kuantum projeleri': 'Quantum projects'
+  'Kuantum projeleri': 'Quantum Projects'
 };
 function translateText(text) {
   const value = text.trim();
@@ -45,7 +45,7 @@ function translateText(text) {
     'Next-generation presales': 'Yeni nesil ön satışlar',
     'Selected refund model': 'Seçkin refund modeli',
     'QUANTUM\nIN ORBIT': 'KUANTUM\nYÖRÜNGEDE',
-    'Quantum projects': 'Kuantum projeleri',
+    'Quantum Projects': 'Kuantum projeleri',
     'From UFOs to exchanges,': 'UFO’dan borsaya,',
     'Move forward step by step': 'adım adım yüksel'
   };
@@ -396,4 +396,4 @@ document.querySelectorAll('.build-button').forEach((button) => button.addEventLi
 }));
 $('#digButton').addEventListener('click', () => { const reward = 25 + Math.floor(Math.random() * 35); crystals += reward; updateResource(); notify(`Kazı tamamlandı: +${reward} kristal.`); });
 setInterval(updateCountdown, 1000); setInterval(() => { if (energy < 86) { energy += 1; updateResource(); } }, 2200);
-mountTierAndLaunchpad(); replaceLegacyCopy(); updateCountdown(); updateResource(); updatePurchaseQuote(); renderAllocations(); $('#qmnMintAddress').textContent = qmnMintAddress; applyLanguage(); replaceLegacyCopy();
+mountTierAndLaunchpad(); replaceLegacyCopy(); updateCountdown(); updateResource(); updatePurchaseQuote(); renderAllocations(); $('#qmnMintAddress').textContent = qmnMintAddress; applyLanguage();
