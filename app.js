@@ -24,10 +24,10 @@ const textTranslations = {
   'QMN için planlanan listeler': 'Planned QMN listings', 'Listeleme tarihleri resmi kanallardan duyurulacaktır. Bu alan söylenti değil, takip panosudur.': 'Listing dates will be announced through official channels. This is a tracker, not a rumor board.', 'Takvim açıklanacak': 'Schedule to be announced', 'Solana ve EVM DEX rotası': 'Solana and EVM DEX route', 'Likidite hazırlığı': 'Liquidity preparation', 'Quintumnia topluluk pazarı': 'Quintumnia community market',
   '02 / ERKEN KAŞİF TIER\'LARI': '02 / EARLY EXPLORER TIERS', 'Daha erken gir, daha çok keşfet.': 'Enter early, explore more.', 'Başlangıç rozeti ve galaksi haritası erişimi.': 'Starter badge and galaxy map access.', 'Tier\'ı seç': 'Choose tier', 'EN ÇOK TERCİH EDİLEN': 'MOST POPULAR', 'Başlangıç fiyatı ve özel UFO kaplaması.': 'Early pricing and an exclusive UFO skin.', 'Sonraki satış aşamasında artan fiyat uygulanır.': 'Higher pricing applies in the next sale phase.', 'Proje gönder +': 'Submit project +', '$MOON · HAZİNE AVCISI': '$MOON · TREASURE HUNTER', 'Başlıyor': 'Launching', 'İncele →': 'Explore →', '$JUNK · SAVAŞ FİLOSU': '$JUNK · BATTLE FLEET', 'Yakında': 'Coming soon',
   'SEKTÖR 07 / ANDROMEDA SINIRI': 'SECTOR 07 / ANDROMEDA FRONTIER', 'AKTİF GÖREV / SAVAŞ': 'ACTIVE MISSION / BATTLE', 'Jupiter yörüngesini düşmanlardan temizle': 'Clear Jupiter orbit of enemies', '3 dalga kaldı · Ödül: 80 kristal + Jupiter çekirdeği': '3 waves left · Reward: 80 crystal + Jupiter core', '02 / KEŞİF ROTASI': '02 / EXPLORATION ROUTE', 'Dünya': 'Earth', 'ÜSSÜN': 'YOUR BASE', 'KEŞFEDİLDİ': 'DISCOVERED', 'SAVAŞ ALANI': 'BATTLE ZONE', 'LVL 10 GEREKLİ': 'LVL 10 REQUIRED', 'SEÇİLİ GEZEGEN': 'SELECTED PLANET', 'Üssün burada. Filonu hazırla ve savaşa kat.': 'Your base is here. Prepare your fleet and join the battle.', 'JUPITER YÖRÜNGESİ / SAVAŞ': 'JUPITER ORBIT / BATTLE', 'ENERJİ': 'ENERGY', '03 / FİLO': '03 / FLEET', 'Hızlı keşif gemisi · Aktif': 'Fast scout ship · Active', 'Seçili gemi ✓': 'Selected ship ✓', 'Savaş sınıfı · Kilitli': 'Battle class · Locked', 'Kilidi aç · 180 ◆': 'Unlock · 180 ◆', '04 / İNŞAAT': '04 / CONSTRUCTION', 'Kristal üretimini hızlandırır.': 'Accelerates crystal production.', 'İnşa et · 80 ◆': 'Build · 80 ◆', 'Üssünü korur.': 'Protect your base.', 'İnşa et · 160 ◆': 'Build · 160 ◆', '05 / HAZİNE': '05 / TREASURE', 'Kristal çekirdeği': 'Crystal core', 'Ay taşı': 'Moonstone', 'Antik parça': 'Ancient fragment',
-  'Memelerin yörüngesi.': 'Quantum-focused projects.',
-  'Galaksinin yeni çağı.': 'Next-generation presales.',
+  'Memelerin yörüngesi.': 'Quantum-focused projects',
+  'Galaksinin yeni çağı.': 'Next-generation presales',
   'UFO filonu kur, QMN ekonomisine katıl ve topluluğun seçtiği yeni galaktik projeleri keşfet.': 'Quintumnia brings community-selected quantum-focused projects and ventures with a special refund model to presale.',
-  'çok daha fazlası.': 'Selected refund model.',
+  'çok daha fazlası.': 'Selected refund model',
   'Body Bushman General Komutan komutasında; topluluk, oyun ve galaktik ekonomi tek bir neon cephede buluşuyor.': 'Quantum-focused projects with a specially selected refund model will be offered for presale on Quintumnia after a transparent review.',
   '◆ TOPLULUK GÜCÜ': '◆ QUANTUM FOCUS',
   '✦ OYUN EVRENİ': '✦ SELECTED PROJECTS',
@@ -39,9 +39,9 @@ function translateText(text) {
   const value = text.trim();
   if (!value) return text;
   const localizedOverrides = {
-    'Quantum-focused projects.': 'Kuantum odaklı projeler.',
-    'Next-generation presales.': 'Yeni nesil ön satışlar.',
-    'Selected refund model.': 'Seçkin refund modeli.',
+    'Quantum-focused projects': 'Kuantum odaklı projeler',
+    'Next-generation presales': 'Yeni nesil ön satışlar',
+    'Selected refund model': 'Seçkin refund modeli',
     'QUANTUM\nIN ORBIT': 'KUANTUM\nYÖRÜNGEDE'
   };
   const translated = language === 'tr' ? localizedOverrides[value] || Object.entries(textTranslations).find(([, english]) => english === value)?.[0] : textTranslations[value];
@@ -201,10 +201,10 @@ function updateCountdown() {
 }
 function replaceLegacyCopy() {
   const replacements = new Map([
-    ['Memelerin yörüngesi.', 'Kuantum odaklı projeler.'],
-    ['Galaksinin yeni çağı.', 'Yeni nesil ön satışlar.'],
+    ['Memelerin yörüngesi.', 'Kuantum odaklı projeler'],
+    ['Galaksinin yeni çağı.', 'Yeni nesil ön satışlar'],
     ["Bir meme coin'den", 'Kuantum projeleri.'],
-    ['çok daha fazlası.', 'Seçkin refund modeli.'],
+    ['çok daha fazlası.', 'Seçkin refund modeli'],
     ['yeni meme filoları.', 'refund modeli incelemesi.'],
     ['TAKE ME', 'QUANTUM']
   ]);

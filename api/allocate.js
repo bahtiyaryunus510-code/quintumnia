@@ -88,12 +88,13 @@ module.exports = async function handler(request, response) {
     if (!source) return fail(response, 503, `${config.sourceEnv} ayarlanmamış.`);
     const sourceAccount = await getAccount(connection, new PublicKey(source), 'confirmed', TOKEN_PROGRAM_ID);
     if (!sourceAccount.owner.equals(authority.publicKey)) return fail(response, 500, 'QMN kaynak hesabı authority ile eşleşmiyor.');
+    if (!sourceAccount.mint.equals(mint)) return fail(response, 500, 'QMN kaynak hesabı seçilen ağın mint adresiyle eşleşmiyor.');
     const rawAmount = getRawTokenAmount(solAmount);
     if (sourceAccount.amount < rawAmount) return fail(response, 503, 'QMN kaynak hesabında yeterli bakiye yok.');
 
     const recipient = await getOrCreateAssociatedTokenAccount(connection, authority, mint, new PublicKey(buyer), false, 'confirmed', { commitment: 'confirmed' }, TOKEN_PROGRAM_ID);
     const transferSignature = await transferChecked(connection, authority, sourceAccount.address, mint, recipient.address, authority, rawAmount, TOKEN_DECIMALS, [], undefined, TOKEN_PROGRAM_ID);
-    return response.status(200).json({ signature, transferSignature, amount: solAmount, qmnAmount: Number(rawAmount) / 10 ** TOKEN_DECIMALS, mint: config.mint, network });
+    return response.status(200).json({ signature, transferSignature, amount: solAmount, qmnAmount: solAmount * (solAmount >= 10.01 ? 9000 : 9950), mint: config.mint, network });
   } catch (error) {
     console.error('QMN allocation failed', error);
     return fail(response, 500, 'QMN dağıtımı tamamlanamadı.');
