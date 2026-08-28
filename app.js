@@ -1,6 +1,6 @@
 const $ = (selector) => document.querySelector(selector);
 const toast = $('#toast');
-let language = 'en';
+let language = 'tr';
 const textTranslations = {
   'SEZON 01': 'SEASON 01', 'Komutan': 'Commander', 'Oyuna katıl, QMN al.': 'Join the game, get QMN.',
   'Ön satış 3 ay açık. ETH, USDT veya BNB ile cüzdan imzasıyla ödeme yap.': 'Presale is open for 3 months. Pay with ETH, USDT or BNB using your wallet signature.',
@@ -8,6 +8,7 @@ const textTranslations = {
   'Cüzdan bağlı değil': 'Wallet not connected', 'Bağlandı:': 'Connected:', 'Cüzdan bağlandı. Satın alma işlemi için miktar gir.': 'Wallet connected. Enter an amount to purchase.',
   'Cüzdan bağlantısı iptal edildi.': 'Wallet connection was cancelled.', 'Phantom bulunamadı.': 'Phantom was not found.', 'MetaMask bulunamadı.': 'MetaMask was not found.',
   'Galaksi haritası': 'Galaxy map', 'UFO hangarı': 'UFO hangar', 'Üssüm': 'My base', 'Hazine sandığı': 'Treasure chest',
+  'Join the game, get QMN.': 'Oyuna katıl, QMN al.', 'Oyuna katıl, QMN al.': 'Join the game, get QMN.', 'PRESALE ENDS': 'ÖN SATIŞ BİTİŞİ', 'ÖN SATIŞ BİTİŞİ': 'PRESALE ENDS', '90 DAYS': '90 GÜN', '90 GÜN': '90 DAYS', 'Connect wallet': 'Cüzdan bağla', 'Cüzdan bağla': 'Connect wallet', 'Wallet not connected': 'Cüzdan bağlı değil', 'Cüzdan bağlı değil': 'Wallet not connected',
   'Galaksiye hükmet.': 'Rule the galaxy.', 'Göreve git': 'Go to mission', 'Gezegenlerini seç.': 'Choose your planet.',
   'Keşfedildi': 'Discovered', 'Savaş alanı': 'Battle zone', 'Kilitli': 'Locked', 'UFO ile git': 'Travel by UFO',
   'Düşman filosu algılandı.': 'Enemy fleet detected.', 'Geri dön': 'Return', 'LAZERİ ATEŞLE ✦': 'FIRE LASER ✦',
@@ -22,6 +23,7 @@ const textTranslations = {
   'SÜRE KALANI': 'TIME LEFT', 'GÜN': 'DAYS', 'DAKİKA': 'MINUTES', 'SANİYE': 'SECONDS', 'QMN TAHSİSİ': 'QMN ALLOCATION', 'Solana Mainnet': 'Solana Mainnet', 'Solana Devnet (test)': 'Solana Devnet (test)', 'Henüz tahsis yok.': 'No allocations yet.',
   'adım adım yüksel.': 'Move forward step by step', 'Kuantum odaklı projeler': 'Quantum-focused projects', 'Yeni nesil ön satışlar': 'Next-generation presales', 'Kuantum projeleri': 'Quantum projects', 'Seçkin refund modeli': 'Selected refund model', 'Quintumnia, oyun ve token ekonomisini aynı yörüngede büyüten topluluk odaklı bir evren.': 'Quintumnia is a community-driven universe growing gaming and token economics in the same orbit.', 'ŞİMDİ': 'NOW', 'QMN ön satışı, cüzdan bağlantısı ve ilk topluluk projeleri.': 'QMN presale, wallet connection and first community projects.', 'AKTİF': 'ACTIVE', 'SONRAKİ SEKTÖR': 'NEXT SECTOR', 'Topluluk seçimi, proje başvuruları ve yeni meme filoları.': 'Community voting, project submissions and new meme fleets.', 'OYUN EVRENİ': 'GAME UNIVERSE', 'Galactic War genişlemesi': 'Galactic War expansion', 'Yeni gezegenler, filo görevleri, sezon ödülleri ve oyuncu ekonomisi.': 'New planets, fleet missions, season rewards and player economy.',
   'QMN için planlanan listeler': 'Planned QMN listings', 'Listeleme tarihleri resmi kanallardan duyurulacaktır. Bu alan söylenti değil, takip panosudur.': 'Listing dates will be announced through official channels. This is a tracker, not a rumor board.', 'Takvim açıklanacak': 'Schedule to be announced', 'Solana ve EVM DEX rotası': 'Solana and EVM DEX route', 'Likidite hazırlığı': 'Liquidity preparation', 'Quintumnia topluluk pazarı': 'Quintumnia community market',
+  'Launchpad sinyali': 'Launchpad signal', 'Launchpad signal': 'Launchpad sinyali', 'Tier-1 merkezi borsalar': 'Tier-1 centralized exchanges', 'Tier-1 centralized exchanges': 'Tier-1 merkezi borsalar', 'Galaksinin yeni projeleri.': 'New projects of the galaxy.', 'New projects of the galaxy.': 'Galaksinin yeni projeleri.', 'QMN satın al.': 'Buy QMN.', 'Buy QMN.': 'QMN satın al.', 'Gelecek rotası': 'Future route', 'Future route': 'Gelecek rotası',
   '02 / ERKEN KAŞİF TIER\'LARI': '02 / EARLY EXPLORER TIERS', 'Daha erken gir, daha çok keşfet.': 'Enter early, explore more.', 'Başlangıç rozeti ve galaksi haritası erişimi.': 'Starter badge and galaxy map access.', 'Tier\'ı seç': 'Choose tier', 'EN ÇOK TERCİH EDİLEN': 'MOST POPULAR', 'Başlangıç fiyatı ve özel UFO kaplaması.': 'Early pricing and an exclusive UFO skin.', 'Sonraki satış aşamasında artan fiyat uygulanır.': 'Higher pricing applies in the next sale phase.', 'Proje gönder +': 'Submit project +', '$MOON · HAZİNE AVCISI': '$MOON · TREASURE HUNTER', 'Başlıyor': 'Launching', 'İncele →': 'Explore →', '$JUNK · SAVAŞ FİLOSU': '$JUNK · BATTLE FLEET', 'Yakında': 'Coming soon',
   'SEKTÖR 07 / ANDROMEDA SINIRI': 'SECTOR 07 / ANDROMEDA FRONTIER', 'AKTİF GÖREV / SAVAŞ': 'ACTIVE MISSION / BATTLE', 'Jupiter yörüngesini düşmanlardan temizle': 'Clear Jupiter orbit of enemies', '3 dalga kaldı · Ödül: 80 kristal + Jupiter çekirdeği': '3 waves left · Reward: 80 crystal + Jupiter core', '02 / KEŞİF ROTASI': '02 / EXPLORATION ROUTE', 'Dünya': 'Earth', 'ÜSSÜN': 'YOUR BASE', 'KEŞFEDİLDİ': 'DISCOVERED', 'SAVAŞ ALANI': 'BATTLE ZONE', 'LVL 10 GEREKLİ': 'LVL 10 REQUIRED', 'SEÇİLİ GEZEGEN': 'SELECTED PLANET', 'Üssün burada. Filonu hazırla ve savaşa kat.': 'Your base is here. Prepare your fleet and join the battle.', 'JUPITER YÖRÜNGESİ / SAVAŞ': 'JUPITER ORBIT / BATTLE', 'ENERJİ': 'ENERGY', '03 / FİLO': '03 / FLEET', 'Hızlı keşif gemisi · Aktif': 'Fast scout ship · Active', 'Seçili gemi ✓': 'Selected ship ✓', 'Savaş sınıfı · Kilitli': 'Battle class · Locked', 'Kilidi aç · 180 ◆': 'Unlock · 180 ◆', '04 / İNŞAAT': '04 / CONSTRUCTION', 'Kristal üretimini hızlandırır.': 'Accelerates crystal production.', 'İnşa et · 80 ◆': 'Build · 80 ◆', 'Üssünü korur.': 'Protect your base.', 'İnşa et · 160 ◆': 'Build · 160 ◆', '05 / HAZİNE': '05 / TREASURE', 'Kristal çekirdeği': 'Crystal core', 'Ay taşı': 'Moonstone', 'Antik parça': 'Ancient fragment',
   'Memelerin yörüngesi.': 'Quantum-focused projects',
@@ -47,7 +49,15 @@ function translateText(text) {
     'QUANTUM\nIN ORBIT': 'KUANTUM\nYÖRÜNGEDE',
     'Quantum Projects': 'Kuantum projeleri',
     'From UFOs to exchanges,': 'UFO’dan borsaya,',
-    'Move forward step by step': 'adım adım yüksel'
+    'Move forward step by step': 'adım adım yüksel',
+    'Launchpad signal': 'Launchpad sinyali',
+    'Tier-1 centralized exchanges': 'Tier-1 merkezi borsalar',
+    'New projects of the galaxy.': 'Galaksinin yeni projeleri.',
+    'Buy QMN.': 'QMN satın al.',
+    'Join the game, get QMN.': 'Oyuna katıl, QMN al.',
+    'Connect wallet': 'Cüzdan bağla',
+    'Wallet not connected': 'Cüzdan bağlı değil',
+    'PRESALE ENDS': 'ÖN SATIŞ BİTİŞİ'
   };
   const translated = language === 'tr' ? localizedOverrides[value] || Object.entries(textTranslations).find(([, english]) => english === value)?.[0] : textTranslations[value];
   return translated ? text.replace(value, translated) : text;

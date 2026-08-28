@@ -8,6 +8,557 @@
 </style>
 <style>.topbar-actions{display:flex;align-items:center;gap:18px}.language-switch{display:flex;border:1px solid #303b46}.language-switch button{border:0;background:transparent;color:#8994a0;padding:6px 8px;font:10px 'DM Mono'}.language-switch button.active{background:#c9f35a;color:#101419}.wallet-logout{border:1px solid #101419;background:transparent;color:#101419;padding:10px 12px;font-size:11px}</style>
 <link rel="stylesheet" href="army-command.css">
+<style>
+  :root {
+    --premium-bg: #0b1117;
+    --premium-bg-2: #111b27;
+    --premium-panel: rgba(18, 25, 34, 0.82);
+    --premium-panel-strong: rgba(13, 18, 25, 0.96);
+    --premium-line: rgba(125, 146, 164, 0.24);
+    --premium-text: #edf4f5;
+    --premium-muted: #9aa8b5;
+    --premium-lime: #c9f35a;
+    --premium-lime-soft: rgba(201, 243, 90, 0.18);
+    --premium-orange: #ff8a5b;
+    --premium-cyan: #7fe7d8;
+    --premium-blue: #7bb4ff;
+    --premium-shadow: 0 28px 60px rgba(6, 10, 15, 0.45);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background:
+      radial-gradient(circle at top left, rgba(154, 214, 255, 0.08), transparent 28%),
+      radial-gradient(circle at 80% 10%, rgba(201, 243, 90, 0.08), transparent 24%),
+      var(--premium-bg);
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 25;
+    height: 74px;
+    padding: 0 4vw;
+    backdrop-filter: blur(16px);
+    background: rgba(9, 14, 19, 0.76);
+    border-bottom: 1px solid var(--premium-line);
+  }
+
+  .logo {
+    font-size: 13px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+  }
+
+  .logo b {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    box-shadow: 0 0 24px rgba(201, 243, 90, 0.4);
+  }
+
+  .season {
+    font-size: 10px;
+    letter-spacing: .18em;
+    color: var(--premium-orange);
+  }
+
+  .web3-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    padding: 18px 5vw;
+    background: linear-gradient(90deg, rgba(201, 243, 90, 0.96), rgba(170, 221, 74, 0.9));
+    color: #111820;
+    border-bottom: 1px solid rgba(17, 24, 32, 0.1);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+
+  .web3-bar h2 {
+    color: #111820;
+    font-size: clamp(1.3rem, 2vw, 2rem);
+    margin: 6px 0;
+  }
+
+  .web3-bar p {
+    color: rgba(17, 24, 32, 0.82);
+    font-size: 12px;
+  }
+
+  .web3-meta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    color: #111820;
+  }
+
+  .web3-meta b {
+    font-size: clamp(1.2rem, 2vw, 2rem);
+  }
+
+  .web3-button {
+    background: #111820;
+    color: #edf4f5;
+    border-radius: 12px;
+    border: 1px solid rgba(17,24,32,0.12);
+    padding: 13px 18px;
+    transition: transform .2s ease, box-shadow .2s ease;
+    box-shadow: 0 12px 28px rgba(17,24,32,0.18);
+  }
+
+  .web3-button:hover,
+  .hero-primary:hover,
+  .hero-secondary:hover,
+  .command-link:hover,
+  .buy-row button:hover,
+  .tier-card button:hover,
+  .launchpad-head button:hover {
+    transform: translateY(-1px);
+  }
+
+  .launchpad-hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+    gap: 36px;
+    min-height: 560px;
+    padding: 74px 7vw 64px;
+    background:
+      radial-gradient(circle at 72% 38%, rgba(124, 172, 255, 0.18), transparent 18%),
+      radial-gradient(circle at 82% 60%, rgba(201, 243, 90, 0.12), transparent 20%),
+      linear-gradient(135deg, rgba(16, 22, 28, 0.96), rgba(18, 27, 35, 0.9));
+    border-bottom: 1px solid rgba(125, 146, 164, 0.24);
+  }
+
+  .hero-copy {
+    align-self: center;
+  }
+
+  .hero-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font: 10px 'DM Mono';
+    letter-spacing: .18em;
+    color: var(--premium-cyan);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  .hero-kicker span {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--premium-lime), var(--premium-cyan));
+    box-shadow: 0 0 18px rgba(201,243,90,.8);
+  }
+
+  .hero-copy h1 {
+    margin: 0 0 18px;
+    font-size: clamp(2.9rem, 5vw, 5.8rem);
+    line-height: 0.88;
+    letter-spacing: -0.075em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .hero-copy h1 strong {
+    display: block;
+    color: var(--premium-lime);
+    text-shadow: 0 0 28px rgba(201, 243, 90, 0.18);
+    background: linear-gradient(135deg, #edf6d1 0%, var(--premium-lime) 35%, #d6f165 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero-copy p {
+    max-width: 620px;
+    margin: 0;
+    font-size: 1.08rem;
+    line-height: 1.8;
+    color: var(--premium-muted);
+  }
+
+  .hero-copy .hero-kicker {
+    font-size: 11px;
+    letter-spacing: .18em;
+    padding: 9px 12px;
+    border: 1px solid rgba(127, 231, 216, 0.2);
+    background: rgba(127, 231, 216, 0.04);
+    border-radius: 999px;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 28px;
+  }
+
+  .hero-primary,
+  .hero-secondary,
+  .command-link,
+  .buy-row button,
+  .tier-card button,
+  .launchpad-head button {
+    transition: all .2s ease;
+  }
+
+  .hero-primary,
+  .hero-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px 22px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: .02em;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .hero-primary {
+    background: linear-gradient(135deg, var(--premium-lime), #edf89c);
+    color: #101419;
+    box-shadow: 0 18px 35px rgba(201,243,90,0.23);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .hero-secondary {
+    background: rgba(7, 12, 18, 0.42);
+    color: var(--premium-text);
+    border-color: rgba(201,243,90,0.25);
+    backdrop-filter: blur(8px);
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(120px, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+    max-width: 520px;
+  }
+
+  .hero-stats div {
+    padding: 18px 14px 16px;
+    border: 1px solid var(--premium-line);
+    border-radius: 18px;
+    background: rgba(17, 25, 34, 0.45);
+    backdrop-filter: blur(8px);
+  }
+
+  .hero-stats b {
+    display: block;
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    color: var(--premium-lime);
+  }
+
+  .hero-stats span {
+    color: var(--premium-muted);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: lowercase;
+  }
+
+  .hero-art {
+    position: relative;
+    min-height: 440px;
+    display: grid;
+    place-items: center;
+    filter: drop-shadow(0 32px 48px rgba(0,0,0,.45));
+  }
+
+  .hero-ufo {
+    position: relative;
+    width: 210px;
+    height: 120px;
+    border-radius: 50% 50% 26% 26%;
+    background: linear-gradient(180deg, rgba(97,116,130,.85), rgba(16,20,25,.7));
+    border: 1px solid rgba(201,243,90,.4);
+    box-shadow: 0 0 48px rgba(201,243,90,.12);
+  }
+
+  .hero-ufo i {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    background: rgba(214,235,255,.25);
+    border-radius: 50%;
+    bottom: 12px;
+  }
+
+  .hero-ufo i:nth-child(1) { left: 22px; }
+  .hero-ufo i:nth-child(2) { left: 92px; }
+  .hero-ufo i:nth-child(3) { right: 22px; }
+
+  .hero-ufo span {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: var(--premium-lime);
+  }
+
+  .alien-face,
+  .commander-card,
+  .sale-card,
+  .roadmap-card,
+  .exchange-list > div,
+  .tier-card,
+  .launch-list article,
+  .player-card,
+  .resource-box,
+  .mission-banner,
+  .planet-map {
+    background: rgba(12, 18, 25, 0.76);
+    border: 1px solid rgba(125, 146, 164, 0.2);
+    box-shadow: var(--premium-shadow);
+  }
+
+  .launchpad-hero .signal {
+    position: absolute;
+    right: 28px;
+    bottom: 18px;
+    padding: 12px 14px;
+    min-width: 120px;
+    border-radius: 14px;
+    border: 1px solid rgba(201,243,90,.3);
+    background: rgba(13, 18, 25, 0.72);
+    color: var(--premium-text);
+    font: 10px 'DM Mono';
+    letter-spacing: .12em;
+  }
+
+  .launchpad-hero .signal strong {
+    display: block;
+    margin-top: 6px;
+    color: var(--premium-lime);
+    letter-spacing: .08em;
+  }
+
+  .launchpad-hero .meme-tag {
+    position: absolute;
+    right: 14px;
+    top: 14px;
+    font: 11px 'DM Mono';
+    letter-spacing: .12em;
+    color: var(--premium-lime);
+    text-align: right;
+  }
+
+  .launchpad-hero .hero-art::before {
+    content: "";
+    position: absolute;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124, 180, 255, 0.22), rgba(124, 180, 255, 0) 60%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -46%);
+    z-index: -1;
+  }
+
+  .launchpad-hero .orbit {
+    position: absolute;
+    border: 1px solid rgba(201,243,90,0.18);
+    border-radius: 50%;
+    animation: pulseOrbit 8s ease-in-out infinite;
+  }
+
+  .launchpad-hero .orbit-one {
+    width: 340px;
+    height: 340px;
+    top: 40px;
+    left: 20px;
+  }
+
+  .launchpad-hero .orbit-two {
+    width: 260px;
+    height: 260px;
+    right: 40px;
+    bottom: 50px;
+    animation-delay: 1.2s;
+  }
+
+  .roadmap-section,
+  .presale,
+  .tier-launchpad,
+  .game-shell {
+    margin: 24px 5vw;
+  }
+
+  .roadmap-card,
+  .sale-card,
+  .tier-card,
+  .exchange-list > div,
+  .mission-banner {
+    border-radius: 24px;
+  }
+
+  .exchange-panel {
+    background: linear-gradient(135deg, rgba(24, 33, 40, 0.82), rgba(16, 20, 27, 0.9));
+    border: 1px solid rgba(125, 146, 164, 0.2);
+    border-radius: 28px;
+    padding: 24px;
+  }
+
+  .exchange-list > div {
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .exchange-mark {
+    display: inline-grid;
+    place-items: center;
+    width: 74px;
+    height: 36px;
+    border-radius: 999px;
+    background: rgba(201,243,90,0.12);
+    color: var(--premium-lime);
+    font: 10px 'DM Mono';
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+
+  .exchange-mark.dex { background: rgba(123,180,255,0.14); color: var(--premium-blue); }
+  .exchange-mark.com { background: rgba(255,138,91,0.12); color: var(--premium-orange); }
+
+  .roadmap-card:hover,
+  .sale-card:hover,
+  .tier-card:hover,
+  .exchange-list > div:hover,
+  .mission-banner:hover {
+    border-color: rgba(201, 243, 90, 0.34);
+    transform: translateY(-4px);
+    box-shadow: 0 22px 50px rgba(8, 12, 20, 0.5);
+  }
+
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .language-switch {
+    display: inline-flex;
+    border: 1px solid var(--premium-line);
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.02);
+  }
+
+  .language-switch button {
+    border: 0;
+    background: transparent;
+    color: var(--premium-muted);
+    padding: 8px 10px;
+    font: 10px 'DM Mono';
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+
+  .language-switch button.active {
+    background: var(--premium-lime);
+    color: #101419;
+  }
+
+  .wallet-logout {
+    border: 1px solid rgba(17,24,32,0.4);
+    background: rgba(255,255,255,0.02);
+    color: #111820;
+    padding: 10px 12px;
+    font-size: 11px;
+    border-radius: 12px;
+  }
+
+  @keyframes pulseOrbit {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.04); }
+  }
+
+  @media (max-width: 900px) {
+    .launchpad-hero {
+      grid-template-columns: 1fr;
+      padding-top: 52px;
+    }
+
+    .hero-art {
+      min-height: 320px;
+    }
+
+    .web3-bar,
+    .presale-head,
+    .roadmap-head,
+    .topbar {
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    .exchange-list > div {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .topbar {
+      height: auto;
+      padding-top: 12px;
+      padding-bottom: 12px;
+      gap: 10px;
+    }
+
+    .topbar-actions {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .web3-bar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .hero-primary,
+    .hero-secondary {
+      width: 100%;
+    }
+
+    .hero-stats {
+      grid-template-columns: 1fr;
+    }
+
+    .roadmap-section,
+    .presale,
+    .tier-launchpad,
+    .game-shell {
+      margin-left: 16px;
+      margin-right: 16px;
+    }
+
+    .launchpad-hero {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .hero-copy h1 {
+      line-height: 1;
+    }
+  }
+</style>
 </head>
 <body><script>document.addEventListener('DOMContentLoaded',()=>{const r=[['Memelerin yörüngesi.','Kuantum odaklı projeler'],['Galaksinin yeni çağı.','Yeni nesil ön satışlar'],["Bir meme coin'den",'Kuantum projeleri'],['çok daha fazlası.','Seçkin refund modeli'],['yeni meme filoları.','refund modeli incelemesi'],['TAKE ME','QUANTUM']];const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);while(w.nextNode())r.forEach(([a,b])=>{w.currentNode.textContent=w.currentNode.textContent.replaceAll(a,b)})});</script>
 <header class="topbar"><a class="logo" href="#top"><b>Q</b> QUINTUMNIA</a><div class="season"><i></i> GALACTIC WAR <span>SEZON 01</span></div><div class="topbar-actions"><div class="language-switch" aria-label="Language"><button type="button" data-language="en" class="active">EN</button><button type="button" data-language="tr">TR</button></div><button id="profileButton" class="profile"><span id="profileAvatar">Q</span><span>Komutan<br><b>Quintumnian</b></span></button></div></header>
