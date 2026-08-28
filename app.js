@@ -33,7 +33,9 @@ const textTranslations = {
   '✦ OYUN EVRENİ': '✦ SELECTED PROJECTS',
   '⌁ UFO FİLOSU': '⌁ SPECIAL REFUND MODEL',
   'Topluluk seçimi, proje başvuruları ve yeni meme filoları.': 'Community selection, project submissions and refund model review.',
-  'TAKE ME\nTO THE MOON': 'QUANTUM\nIN ORBIT'
+  'TAKE ME\nTO THE MOON': 'QUANTUM\nIN ORBIT',
+  'UFO’dan borsaya,': 'From UFOs to exchanges,',
+  'Kuantum projeleri': 'Quantum projects'
 };
 function translateText(text) {
   const value = text.trim();
@@ -42,7 +44,10 @@ function translateText(text) {
     'Quantum-focused projects': 'Kuantum odaklı projeler',
     'Next-generation presales': 'Yeni nesil ön satışlar',
     'Selected refund model': 'Seçkin refund modeli',
-    'QUANTUM\nIN ORBIT': 'KUANTUM\nYÖRÜNGEDE'
+    'QUANTUM\nIN ORBIT': 'KUANTUM\nYÖRÜNGEDE',
+    'Quantum projects': 'Kuantum projeleri',
+    'From UFOs to exchanges,': 'UFO’dan borsaya,',
+    'Move forward step by step': 'adım adım yüksel'
   };
   const translated = language === 'tr' ? localizedOverrides[value] || Object.entries(textTranslations).find(([, english]) => english === value)?.[0] : textTranslations[value];
   return translated ? text.replace(value, translated) : text;
