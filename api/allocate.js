@@ -43,7 +43,7 @@ function getAuthority() {
 }
 
 function getRawTokenAmount(solAmount) {
-  const rate = solAmount >= 10.01 ? 9000 : 9950;
+  const rate = solAmount >= 10 ? 995000 : 99500;
   return BigInt(Math.floor(solAmount * rate * 10 ** TOKEN_DECIMALS));
 }
 
@@ -59,7 +59,7 @@ function hasPaymentInstruction(transaction, sender, treasury, lamports) {
 
 module.exports = async function handler(request, response) {
   if (request.method !== 'POST') return fail(response, 405, 'Yalnızca POST desteklenir.');
-  const { signature, buyer, amount, network = 'devnet' } = request.body || {};
+  const { signature, buyer, amount, network = 'mainnet' } = request.body || {};
   const config = CONFIG[network];
   if (!config) return fail(response, 400, 'Geçersiz Solana ağı.');
   if (network === 'mainnet' && process.env.ENABLE_MAINNET_ALLOCATIONS !== 'true') {
@@ -94,7 +94,8 @@ module.exports = async function handler(request, response) {
 
     const recipient = await getOrCreateAssociatedTokenAccount(connection, authority, mint, new PublicKey(buyer), false, 'confirmed', { commitment: 'confirmed' }, TOKEN_PROGRAM_ID);
     const transferSignature = await transferChecked(connection, authority, sourceAccount.address, mint, recipient.address, authority, rawAmount, TOKEN_DECIMALS, [], undefined, TOKEN_PROGRAM_ID);
-    return response.status(200).json({ signature, transferSignature, amount: solAmount, qmnAmount: solAmount * (solAmount >= 10.01 ? 9000 : 9950), mint: config.mint, network });
+    const rate = solAmount >= 10 ? 995000 : 99500;
+    return response.status(200).json({ signature, transferSignature, amount: solAmount, qmnAmount: solAmount * rate, mint: config.mint, network });
   } catch (error) {
     console.error('QMN allocation failed', error);
     return fail(response, 500, 'QMN dağıtımı tamamlanamadı.');
