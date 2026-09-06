@@ -110,7 +110,8 @@ const solanaRpcUrlsByNetwork = {
   mainnet: [
     'https://api.mainnet-beta.solana.com',
     'https://solana-rpc.publicnode.com',
-    'https://rpc.ankr.com/solana'
+    'https://rpc.ankr.com/solana',
+    'https://solana.public-rpc.com'
   ],
   devnet: ['https://api.devnet.solana.com']
 };
@@ -162,19 +163,25 @@ function renderAllocations() {
 
 async function getSolanaConnection() {
   await loadSolanaWeb3();
-  for (const rpcUrl of solanaRpcUrls) {
-    const connection = new solanaWeb3.Connection(rpcUrl, 'confirmed');
-    try {
-      await Promise.race([
-        connection.getEpochInfo(),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('RPC zaman aşımına uğradı.')), 8000))
-      ]);
-      return connection;
-    } catch (error) {
-      console.warn(`Solana RPC kullanılamadı: ${rpcUrl}`, error);
-    }
+  const failedProviders = [];
+  try {
+    return await Promise.any(solanaRpcUrls.map(async (rpcUrl) => {
+      const connection = new solanaWeb3.Connection(rpcUrl, 'confirmed');
+      try {
+        await Promise.race([
+          connection.getLatestBlockhash('confirmed'),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('RPC zaman aşımına uğradı.')), 8000))
+        ]);
+        return connection;
+      } catch (error) {
+        failedProviders.push(`${new URL(rpcUrl).hostname} (${error.message})`);
+        console.warn(`Solana RPC kullanılamadı: ${rpcUrl}`, error);
+        throw error;
+      }
+    }));
+  } catch {
+    throw new Error(`Solana ağına erişilemedi. RPC sağlayıcıları şu anda yanıt vermiyor. Lütfen birkaç saniye sonra tekrar dene. (${failedProviders.join(', ')})`);
   }
-  throw new Error('Solana ağına erişilemedi. RPC sağlayıcıları şu anda yanıt vermiyor.');
 }
 
 function loadSolanaWeb3() {
