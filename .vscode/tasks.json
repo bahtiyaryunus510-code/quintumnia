@@ -12,6 +12,18 @@
 			],
 			"isBackground": false,
 			"problemMatcher": []
+		},
+		{
+			"label": "Commit and push Quintumnia landing page",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"add",
+				"app.js",
+				"index.html"
+			],
+			"isBackground": false,
+			"problemMatcher": []
 		}
 	]
 }

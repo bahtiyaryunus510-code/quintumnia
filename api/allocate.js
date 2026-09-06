@@ -38,7 +38,15 @@ function fail(response, status, message) {
 function getAuthority() {
   const encoded = process.env.QMN_AUTHORITY_SECRET_KEY;
   if (!encoded) throw new Error('QMN_AUTHORITY_SECRET_KEY ayarlanmamış.');
-  const secret = JSON.parse(encoded);
+  let secret;
+  try {
+    secret = JSON.parse(encoded);
+  } catch {
+    throw new Error('QMN_AUTHORITY_SECRET_KEY JSON secret-key dizisi olmalı.');
+  }
+  if (!Array.isArray(secret) || secret.length !== 64 || secret.some((byte) => !Number.isInteger(byte) || byte < 0 || byte > 255)) {
+    throw new Error('QMN_AUTHORITY_SECRET_KEY 64 byte içeren geçerli bir keypair olmalı.');
+  }
   return Keypair.fromSecretKey(Uint8Array.from(secret));
 }
 

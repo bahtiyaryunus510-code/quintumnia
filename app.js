@@ -106,7 +106,15 @@ const usdtContracts = {
   ethereum: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
   bsc: '0x55d398326f99059fF775485246999027B3197955'
 };
-let solanaRpcUrls = ['https://api.mainnet-beta.solana.com'];
+const solanaRpcUrlsByNetwork = {
+  mainnet: [
+    'https://api.mainnet-beta.solana.com',
+    'https://solana-rpc.publicnode.com',
+    'https://rpc.ankr.com/solana'
+  ],
+  devnet: ['https://api.devnet.solana.com']
+};
+let solanaRpcUrls = [...solanaRpcUrlsByNetwork.mainnet];
 const presaleTiers = [
   { minimum: 10, rate: 995000 },
   { minimum: 0.1, rate: 99500 }
@@ -157,7 +165,10 @@ async function getSolanaConnection() {
   for (const rpcUrl of solanaRpcUrls) {
     const connection = new solanaWeb3.Connection(rpcUrl, 'confirmed');
     try {
-      await connection.getEpochInfo();
+      await Promise.race([
+        connection.getEpochInfo(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('RPC zaman aşımına uğradı.')), 8000))
+      ]);
       return connection;
     } catch (error) {
       console.warn(`Solana RPC kullanılamadı: ${rpcUrl}`, error);
@@ -352,7 +363,7 @@ $('#amount').addEventListener('input', updatePurchaseQuote);
 $('#network').addEventListener('change', () => {
   const network = $('#network').value;
   $('#asset').innerHTML = '<option value="SOL">SOL</option>';
-  solanaRpcUrls = [network === 'mainnet' ? 'https://api.mainnet-beta.solana.com' : 'https://api.devnet.solana.com'];
+  solanaRpcUrls = [...solanaRpcUrlsByNetwork[network]];
   qmnMintAddress = qmnMints[network];
   $('#qmnMintAddress').textContent = qmnMintAddress;
   walletPublicKey = null;
