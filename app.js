@@ -22,6 +22,7 @@ const treasury = {
   evm: '0xbBc387A6F5F985DCD52348137539D144b17c3f94'
 };
 const qmnMintAddress = 'CsQr1Uu3TcWp9poQtVa8JSJm5xnsPjomBiTPznpFtaoQ';
+const minimumSolPurchase = 0.1;
 const usdtContracts = {
   ethereum: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
   bsc: '0x55d398326f99059fF775485246999027B3197955'
@@ -53,6 +54,20 @@ async function getSolanaConnection(web3) {
     }
   }
   throw new Error(`Solana mainnet RPC erişilemiyor: ${lastError?.message || 'bilinmeyen hata'}`);
+}
+
+async function getLatestBlockhashWithFallback(web3) {
+  let lastError;
+  for (const endpoint of solanaRpcEndpoints) {
+    const connection = new web3.Connection(endpoint, 'confirmed');
+    try {
+      const latest = await connection.getLatestBlockhash('confirmed');
+      return { connection, ...latest };
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  throw new Error(`Solana işlem ağına erişilemiyor: ${lastError?.message || 'bilinmeyen hata'}`);
 }
 
 function getPhantomProvider() {
@@ -129,39 +144,39 @@ function getTreasuryPublicKey(web3) {
 async function buyTokens() {
   const network = $('#network').value;
   const asset = $('#asset').value;
-  const amount = Number($('#amount').value);
+  if (network !== 'solana' || asset !== 'SOL') return notify('Şu anda yalnızca Solana mainnet destekleniyor.');
+  const amountValue = $('#amount').value.trim();
+  const amount = Number(amountValue);
+  if (!amountValue || !Number.isFinite(amount) || amount < minimumSolPurchase || !/^\d+(\.\d{1,9})?$/.test(amountValue)) {
+    return notify(`En az ${minimumSolPurchase} SOL gir.`);
+  }
   const key = walletPublicKey || await connectWallet();
-  if (!key || !Number.isFinite(amount) || amount < 0.01) return notify('En az 0.01 ödeme birimi gir.');
+  if (!key) return;
   try {
     if (network === 'solana') {
       const web3 = await loadSolanaWeb3();
       const provider = getPhantomProvider();
-      const connection = await getSolanaConnection(web3);
       const fromPubkey = new web3.PublicKey(key.toString());
       const treasuryPublicKey = getTreasuryPublicKey(web3);
-      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
-      const transaction = new web3.Transaction({ feePayer: fromPubkey, recentBlockhash: blockhash }).add(web3.SystemProgram.transfer({ fromPubkey, toPubkey: treasuryPublicKey, lamports: decimalToLamports(amount) }));
-      const signed = await provider.signAndSendTransaction(transaction);
-      await connection.confirmTransaction({ signature: signed.signature, blockhash, lastValidBlockHeight }, 'confirmed');
+      const paymentLamports = decimalToLamports(amountValue);
+      const { connection, blockhash, lastValidBlockHeight } = await getLatestBlockhashWithFallback(web3);
+      const transaction = new web3.Transaction({ feePayer: fromPubkey, recentBlockhash: blockhash }).add(web3.SystemProgram.transfer({ fromPubkey, toPubkey: treasuryPublicKey, lamports: paymentLamports }));
+      notify('Phantom onayı bekleniyor...');
+      const signedTransaction = await provider.signTransaction(transaction);
+      const signature = await connection.sendRawTransaction(signedTransaction.serialize(), { preflightCommitment: 'confirmed' });
+      await connection.confirmTransaction({ signature, blockhash, lastValidBlockHeight }, 'confirmed');
       const distributionResponse = await fetch('/api/purchase', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ signature: signed.signature, buyer: fromPubkey.toString(), amount: String($('#amount').value) })
+        body: JSON.stringify({ signature, buyer: fromPubkey.toString(), amount: amountValue })
       });
       const distribution = await distributionResponse.json();
       if (!distributionResponse.ok) {
-        throw new Error(`${distribution.error || 'QMN dağıtımı tamamlanamadı.'} Ödeme imzası: ${signed.signature}`);
+        throw new Error(`${distribution.error || 'QMN dağıtımı tamamlanamadı.'} Ödeme imzası: ${signature}`);
       }
       notify(`QMN gönderildi: ${distribution.distributionSignature.slice(0, 12)}...`);
       return;
     }
-    const chains = { ethereum: '0x1', bsc: '0x38' };
-    await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: chains[network] }] });
-    const data = asset === 'USDT' ? `0xa9059cbb${treasury.evm.slice(2).padStart(64, '0')}${decimalToBaseUnits(amount, 6)}` : '0x';
-    const value = asset === 'USDT' ? '0x0' : `0x${BigInt(Math.round(amount * 1e18)).toString(16)}`;
-    const tx = { from: key, to: asset === 'USDT' ? usdtContracts[network] : treasury.evm, value, ...(asset === 'USDT' ? { data } : {}) };
-    const hash = await window.ethereum.request({ method: 'eth_sendTransaction', params: [tx] });
-    notify(`Ödeme gönderildi: ${hash.slice(0, 12)}...`);
   } catch (error) {
     notify(error.message || 'İşlem reddedildi veya ağ bağlantısı başarısız.');
   }
@@ -178,7 +193,7 @@ $('#connectWallet').addEventListener('click', connectWallet);
 $('#buyButton').addEventListener('click', buyTokens);
 $('#network').addEventListener('change', () => {
   const network = $('#network').value;
-  $('#asset').innerHTML = network === 'solana' ? '<option value="SOL">SOL</option>' : network === 'ethereum' ? '<option value="ETH">ETH</option><option value="USDT">USDT</option>' : '<option value="BNB">BNB</option><option value="USDT">USDT</option>';
+  $('#asset').innerHTML = '<option value="SOL">SOL</option>';
   walletPublicKey = null;
   $('#connectWallet').textContent = 'Cüzdan bağla';
   $('#walletStatus').textContent = 'Cüzdan bağlı değil';
