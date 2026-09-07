@@ -273,13 +273,13 @@ async function buyTokens() {
       const paymentLamports = decimalToLamports(amountValue);
       const { connection, blockhash, lastValidBlockHeight } = await getLatestBlockhashWithFallback(web3);
       const transaction = new web3.Transaction({ feePayer: fromPubkey, recentBlockhash: blockhash }).add(web3.SystemProgram.transfer({ fromPubkey, toPubkey: treasuryPublicKey, lamports: paymentLamports }));
-      notify('Waiting for Phantom approval...');
+      notify('Opening Phantom approval...');
       let signature;
-      if (typeof provider.signAndSendTransaction === 'function') {
-        const result = await provider.signAndSendTransaction(transaction);
-        signature = typeof result === 'string' ? result : result?.signature;
-      } else if (typeof provider.sendTransaction === 'function') {
+      if (typeof provider.sendTransaction === 'function') {
         signature = await provider.sendTransaction(transaction, connection, { preflightCommitment: 'confirmed' });
+      } else if (typeof provider.signAndSendTransaction === 'function') {
+        const result = await provider.signAndSendTransaction(transaction, { preflightCommitment: 'confirmed' });
+        signature = typeof result === 'string' ? result : result?.signature;
       } else if (typeof provider.signTransaction === 'function') {
         const signedTransaction = await provider.signTransaction(transaction);
         signature = await connection.sendRawTransaction(signedTransaction.serialize(), { preflightCommitment: 'confirmed' });
