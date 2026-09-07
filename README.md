@@ -1,41 +1,20 @@
 # Quintumnia - Web3 Galactic War
 
-Quintumnia Web3 galactic war oyunu. Solana Devnet üzerinde test tahsisi.
+Quintumnia Web3 galactic war oyunu. ETH, USDT veya BNB ile ön satış.
 
 ## Teknik Özellikler
 
 - **Frontend**: HTML5, CSS3, Vanilla JavaScript
-- **Web3**: Solana Web3.js ve Vercel Serverless Function
+- **Web3**: Solana Web3.js, MetaMask (EVM)
 - **Hosting**: Vercel
 
-## Deploy ve Domain
+## Deploy
 
-Bu proje Vercel'de canlı:
-- https://www.quintumnia.space
-- https://quintumnia.vercel.app (geçici)
+Ana domain:
+- https://quintumnia.space
 
-Apex domain `quintumnia.space` otomatik olarak `https://www.quintumnia.space` adresine yönlendirilir.
-
-Domainleri Vercel projesine eklemek için PowerShell'de Vercel token oluşturup şu komutları çalıştırın:
-
-```powershell
-$env:VERCEL_TOKEN = "<vercel-token>"
-.\scripts\add_vercel_domains.ps1
-```
-
-Script `quintumnia.space` ve `www.quintumnia.space` alan adlarını `quintumnia` projesine ekler ve hata oluşursa işlemi durdurur. Namecheap Advanced DNS'te mevcut parking kayıtlarını silip şu kayıtları ekleyin:
-
-```text
-A      @      76.76.21.21
-CNAME  www    cname.vercel-dns.com
-```
-
-`www` için `parkingpage.namecheap.com` ve apex için `162.255.119.191` kayıtları kalırsa site Vercel'e ulaşmaz. DNS değişikliğinden sonra 5-30 dakika bekleyip domain durumunu kontrol edin:
-
-```powershell
-vercel domains inspect quintumnia.space --token $env:VERCEL_TOKEN
-vercel domains inspect www.quintumnia.space --token $env:VERCEL_TOKEN
-```
+Vercel önizleme adresi:
+- https://quintumnia.vercel.app
 
 ## Özellikleri
 
@@ -44,23 +23,19 @@ vercel domains inspect www.quintumnia.space --token $env:VERCEL_TOKEN
 - ⌂ Üssüm yönetimi
 - ▦ Hazine sandığı
 - QMN token ön satışı
-- Solana Mainnet QMN tahsisi
+- Solana/Ethereum/BNB desteği
 
-## Mainnet satış akışı
+## QMN dağıtım ayarları
 
-Presale arayüzü varsayılan olarak Solana Mainnet üzerinde çalışır. Phantom ile bağlandıktan sonra gerçek SOL transferi onaylanır; `/api/allocate` backend'i işlemi treasury adresine karşı doğrular ve QMN kaynak token hesabından alıcının ATA'sine token gönderir. Tahsis, token transferi başarıyla tamamlandıktan sonra tarayıcının `localStorage` alanına kaydedilir. Devnet seçeneği test amacıyla korunur.
+Vercel Environment Variables bölümünde şu değerleri tanımla:
 
-## Backend kurulumu
+- `SOLANA_RPC_URL`: Mainnet RPC adresi
+- `TREASURY_ADDRESS`: `956WKowgGxqkZAU6bN9fvkhZvtbtexXxUPUjrKdFU7dJ`
+- `QMN_MINT_ADDRESS`: `CsQr1Uu3TcWp9poQtVa8JSJm5xnsPjomBiTPznpFtaoQ`
+- `QMN_SOURCE_TOKEN_ACCOUNT`: QMN dağıtım token hesabı
+- `QMN_TOKEN_AUTHORITY_SECRET`: Dağıtım token hesabının yetkili cüzdan secret key JSON dizisi
 
-```powershell
-npm install
-vercel env add QMN_AUTHORITY_SECRET_KEY production
-vercel env add QMN_DEVNET_SOURCE_TOKEN_ACCOUNT production
-vercel env add QMN_MAINNET_SOURCE_TOKEN_ACCOUNT production
-vercel env add ENABLE_MAINNET_ALLOCATIONS production
-```
-
-`QMN_AUTHORITY_SECRET_KEY`, QMN kaynak token hesaplarının sahibi olan treasury keypair'inin JSON secret-key dizisidir. Bu değeri frontend'e, Git'e veya sohbet mesajına koymayın. `QMN_DEVNET_SOURCE_TOKEN_ACCOUNT` ve `QMN_MAINNET_SOURCE_TOKEN_ACCOUNT`, ilgili ağdaki QMN token hesaplarıdır; treasury wallet adresi bu alanlara yazılmamalıdır. Mainnet dağıtımı için Vercel Production ortamında `ENABLE_MAINNET_ALLOCATIONS=true` olmalı ve `QMN_MAINNET_SOURCE_TOKEN_ACCOUNT` mainnet mint hesabını göstermelidir.
+`QMN_TOKEN_AUTHORITY_SECRET` yalnızca Vercel secret environment variable olarak tutulmalıdır; frontend dosyalarına veya git deposuna eklenmemelidir.
 
 ## Lisans
 
