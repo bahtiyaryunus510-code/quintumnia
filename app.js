@@ -154,6 +154,7 @@ function translatePageToEnglish() {
     'İNŞAAT': 'CONSTRUCTION',
     'HAZİNE': 'TREASURE',
     'Kristal sera': 'Crystal greenhouse',
+    'Crystal sera': 'Crystal greenhouse',
     'Kristal üretimini hızlandırır.': 'Accelerates crystal production.',
     'Crystal üretimini hızlandırır.': 'Accelerates crystal production.',
     'İnşa et · ': 'Build · ',
@@ -169,6 +170,7 @@ function translatePageToEnglish() {
     'Dünya': 'Earth',
     'ÜSSÜN': 'YOUR BASE',
     'Mars': 'Mars',
+    'Ay': 'Moon',
     'Jupiter': 'Jupiter',
     'Yeni kazı başlat ✦': 'Start new dig ✦'
   };
