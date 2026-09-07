@@ -8,14 +8,14 @@ const saleEndsAt = Date.now() + 90 * 24 * 60 * 60 * 1000;
 function mountTierAndLaunchpad() {
   const section = document.createElement('section');
   section.className = 'tier-launchpad';
-  section.innerHTML = `<div class="tier-title"><small>02 / ERKEN KAŞİF TIER'LARI</small><h2>Daha erken gir, daha çok keşfet.</h2></div><div class="tier-grid"><article class="tier-card"><small>ROOKIE</small><b>0.1+ SOL</b><span>10,000 QMN / SOL</span><p>Başlangıç rozeti ve galaksi haritası erişimi.</p><button data-tier="Rookie">Tier'ı seç</button></article><article class="tier-card featured"><em>EN ÇOK TERCİH EDİLEN</em><small>EXPLORER</small><b>1+ SOL</b><span>11,000 QMN / SOL</span><p>%10 bonus QMN ve özel UFO kaplaması.</p><button data-tier="Explorer">Tier'ı seç</button></article><article class="tier-card"><small>COMMANDER</small><b>5+ SOL</b><span>12,500 QMN / SOL</span><p>%25 bonus, Jupiter çekirdeği ve erken erişim.</p><button data-tier="Commander">Tier'ı seç</button></article></div><div class="launchpad-head"><div><small>03 / QUINTUMNIA LAUNCHPAD</small><h2>Galaksinin yeni projeleri.</h2></div><button id="submitProject">Proje gönder +</button></div><div class="launch-list"><article><span class="project-icon">◈</span><div><b>Moon Miner</b><small>$MOON · HAZİNE AVCISI</small></div><strong>Başlıyor</strong><button data-project="Moon Miner">İncele →</button></article><article><span class="project-icon orange-icon">✦</span><div><b>Jupiter Junkies</b><small>$JUNK · SAVAŞ FİLOSU</small></div><strong>Yakında</strong><button data-project="Jupiter Junkies">İncele →</button></article></div>`;
+  section.innerHTML = `<div class="tier-title"><small>02 / EARLY EXPLORER TIERS</small><h2>Enter early, discover more.</h2></div><div class="tier-grid"><article class="tier-card"><small>ROOKIE</small><b>0.1+ SOL</b><span>10,000 QMN / SOL</span><p>Starter badge and galaxy map access.</p><button data-tier="Rookie">Select tier</button></article><article class="tier-card featured"><em>MOST POPULAR</em><small>EXPLORER</small><b>1+ SOL</b><span>11,000 QMN / SOL</span><p>10% bonus QMN and an exclusive UFO skin.</p><button data-tier="Explorer">Select tier</button></article><article class="tier-card"><small>COMMANDER</small><b>5+ SOL</b><span>12,500 QMN / SOL</span><p>25% bonus, Jupiter core and early access.</p><button data-tier="Commander">Select tier</button></article></div><div class="launchpad-head"><div><small>03 / QUINTUMNIA LAUNCHPAD</small><h2>The galaxy's next projects.</h2></div><button id="submitProject">Submit project +</button></div><div class="launch-list"><article><span class="project-icon">◈</span><div><b>Moon Miner</b><small>$MOON · TREASURE HUNTER</small></div><strong>Launching</strong><button data-project="Moon Miner">View →</button></article><article><span class="project-icon orange-icon">✦</span><div><b>Jupiter Junkies</b><small>$JUNK · BATTLE FLEET</small></div><strong>Coming soon</strong><button data-project="Jupiter Junkies">View →</button></article></div>`;
   document.querySelector('#top').before(section);
   const style = document.createElement('style');
   style.textContent = `.tier-launchpad{padding:48px 5vw;background:#101419;color:#f1f2ed}.tier-title h2,.launchpad-head h2{font-size:28px;margin:8px 0 22px}.tier-title small,.launchpad-head small{font:10px 'DM Mono';color:#8994a0}.tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.tier-card{position:relative;padding:20px;border:1px solid #303b46;background:#171d24}.tier-card.featured{border-color:#c9f35a}.tier-card em{position:absolute;right:12px;top:12px;color:#c9f35a;font:9px 'DM Mono';font-style:normal}.tier-card small{display:block;color:#ff7350;font:10px 'DM Mono'}.tier-card>b{display:block;font-size:27px;margin:15px 0 4px}.tier-card span{font:11px 'DM Mono';color:#c9f35a}.tier-card p{min-height:32px;color:#8994a0;font-size:11px;line-height:1.5}.tier-card button,.launchpad-head button{padding:10px 12px;border:1px solid #c9f35a;background:transparent;color:#c9f35a;font-size:11px}.launchpad-head{display:flex;justify-content:space-between;align-items:end;margin-top:50px}.launch-list{border-top:1px solid #303b46}.launch-list article{display:grid;grid-template-columns:42px 1fr 90px 80px;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid #303b46}.project-icon{display:grid;place-items:center;width:34px;height:34px;background:#c9f35a;color:#101419;font-size:20px}.orange-icon{background:#ff7350}.launch-list b{display:block}.launch-list small{display:block;color:#8994a0;font:9px 'DM Mono';margin-top:4px}.launch-list strong{color:#ff7350;font:10px 'DM Mono'}.launch-list button{border:0;background:none;color:#c9f35a;font-size:11px}@media(max-width:700px){.tier-launchpad{padding:35px 20px}.tier-grid{grid-template-columns:1fr}.launchpad-head{align-items:start;gap:15px;flex-direction:column}.launch-list article{grid-template-columns:38px 1fr 70px}.launch-list button{grid-column:2}.tier-card p{min-height:0}}`;
   document.head.append(style);
-  section.querySelectorAll('[data-tier]').forEach((button) => button.addEventListener('click', () => notify(`${button.dataset.tier} tier seçildi. Satın alma panelinden ödeme ağı ve miktarı onayla.`)));
-  section.querySelectorAll('[data-project]').forEach((button) => button.addEventListener('click', () => notify(`${button.dataset.project} proje sayfası yakında açılacak.`)));
-  $('#submitProject').addEventListener('click', () => notify('Proje başvuru formu yakında açılacak.'));
+  section.querySelectorAll('[data-tier]').forEach((button) => button.addEventListener('click', () => notify(`${button.dataset.tier} tier selected. Confirm the network and amount in the purchase panel.`)));
+  section.querySelectorAll('[data-project]').forEach((button) => button.addEventListener('click', () => notify(`${button.dataset.project} project page is coming soon.`)));
+  $('#submitProject').addEventListener('click', () => notify('The project submission form is coming soon.'));
 }
 const treasury = {
   solana: '956WKowgGxqkZAU6bN9fvkhZvtbtexXxUPUjrKdFU7dJ',
@@ -37,7 +37,7 @@ function loadSolanaWeb3() {
     const script = document.createElement('script');
     script.src = 'https://unpkg.com/@solana/web3.js@1.95.3/lib/index.iife.min.js';
     script.onload = () => resolve(window.solanaWeb3);
-    script.onerror = () => reject(new Error('Solana istemcisi yüklenemedi.'));
+    script.onerror = () => reject(new Error('The Solana client could not be loaded.'));
     document.head.appendChild(script);
   });
 }
@@ -53,7 +53,7 @@ async function getSolanaConnection(web3) {
       lastError = error;
     }
   }
-  throw new Error(`Solana mainnet RPC erişilemiyor: ${lastError?.message || 'bilinmeyen hata'}`);
+  throw new Error(`Solana mainnet RPC is unavailable: ${lastError?.message || 'unknown error'}`);
 }
 
 async function getLatestBlockhashWithFallback(web3) {
@@ -67,12 +67,12 @@ async function getLatestBlockhashWithFallback(web3) {
       lastError = error;
     }
   }
-  throw new Error(`Solana işlem ağına erişilemiyor: ${lastError?.message || 'bilinmeyen hata'}`);
+  throw new Error(`The Solana network is unavailable: ${lastError?.message || 'unknown error'}`);
 }
 
 function getPhantomProvider() {
-  const provider = window.phantom?.solana || window.solana;
-  if (!provider?.isPhantom) throw new Error('Phantom bulunamadı. Phantom eklentisini etkinleştirip tekrar dene.');
+  const provider = window.phantom?.solana || (window.solana?.isPhantom ? window.solana : null);
+  if (!provider) throw new Error('Phantom Wallet was not detected. Install or unlock Phantom and try again.');
   return provider;
 }
 
@@ -81,6 +81,67 @@ function notify(message) {
   toast.classList.add('show');
   clearTimeout(notify.timer);
   notify.timer = setTimeout(() => toast.classList.remove('show'), 4000);
+}
+function translatePageToEnglish() {
+  const translations = {
+    'SEZON 01': 'SEASON 01',
+    'Komutan': 'Commander',
+    'Oyuna katıl, QMN al.': 'Join the game, earn QMN.',
+    'Phantom ile Solana mainnet üzerinde ödeme yap; cüzdan onayından sonra QMN aynı cüzdana gönderilir.': 'Pay on Solana mainnet with Phantom; QMN is sent to the same wallet after approval.',
+    'ÖN SATIŞ BİTİŞİ': 'PRESALE ENDS',
+    'GÜN': 'DAYS',
+    'Cüzdan bağla': 'Connect wallet',
+    '01 / QMN TOKEN ÖN SATIŞI': '01 / QMN TOKEN PRESALE',
+    'Galaksinin ekonomisine erken katıl.': 'Get early access to the galactic economy.',
+    'Şeffaf fiyat. Solana mainnet üzerinde 0,1 SOL = 10.000 QMN, 1 SOL = 100.000 QMN, 10 SOL = 1.000.000 QMN.': 'Transparent pricing. On Solana mainnet, 0.1 SOL = 10,000 QMN, 1 SOL = 100,000 QMN, 10 SOL = 1,000,000 QMN.',
+    'Cüzdan bağlı değil': 'Wallet not connected',
+    'SÜRE KALANI': 'TIME LEFT',
+    'SAAT': 'HOURS',
+    'DAKİKA': 'MINUTES',
+    'SANİYE': 'SECONDS',
+    'QMN satıldı': 'QMN sold',
+    'QMN SATIN AL': 'BUY QMN',
+    'QMN satın al →': 'Buy QMN →',
+    'FON HAZİNESİ: ': 'TREASURY: ',
+    'QMN MINT: ': 'QMN MINT: ',
+    'Ödeme Solana mainnet üzerinde yalnızca cüzdan onayından sonra gönderilir; QMN doğrulanmış ödeme sonrası aynı cüzdana dağıtılır.': 'Payment is sent on Solana mainnet only after wallet approval; QMN is distributed to the same wallet after payment verification.',
+    'OYUNCU 001': 'PLAYER 001',
+    "Fotoğrafı alien'a çevir": 'Turn photo into alien',
+    'Galaksi haritası': 'Galaxy map',
+    'UFO hangarı': 'UFO hangar',
+    'Üssüm': 'My base',
+    'Hazine sandığı': 'Treasure chest',
+    'KAYNAKLAR': 'RESOURCES',
+    'Kristal': 'Crystal',
+    'Metal': 'Metal',
+    'Enerji': 'Energy',
+    'SEKTÖR 07 / ANDROMEDA SINIRI': 'SECTOR 07 / ANDROMEDA FRONTIER',
+    'Galaksiye hükmet.': 'Rule the galaxy.',
+    'RÜTBE': 'RANK',
+    'AKTİF GÖREV / SAVAŞ': 'ACTIVE MISSION / BATTLE',
+    'Jupiter yörüngesini düşmanlardan temizle': 'Clear the Jupiter orbit of enemies',
+    '3 dalga kaldı · Ödül: 80 kristal + Jupiter çekirdeği': '3 waves left · Reward: 80 crystal + Jupiter core',
+    'Göreve git ': 'Go to mission ',
+    'KEŞİF ROTASI': 'EXPLORATION ROUTE',
+    'Gezegenlerini seç.': 'Choose your planets.',
+    'Keşfedildi': 'Discovered',
+    'Savaş alanı': 'Battle zone',
+    'Kilitli': 'Locked',
+    'Dünya': 'Earth',
+    'ÜSSÜN': 'YOUR BASE',
+    'Mars': 'Mars',
+    'Jupiter': 'Jupiter',
+    'Yeni kazı başlat ✦': 'Start new dig ✦'
+  };
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const textNodes = [];
+  while (walker.nextNode()) textNodes.push(walker.currentNode);
+  textNodes.forEach((node) => {
+    let text = node.nodeValue;
+    Object.entries(translations).forEach(([source, target]) => { text = text.replaceAll(source, target); });
+    node.nodeValue = text;
+  });
+  document.documentElement.lang = 'en';
 }
 function updateResource() {
   $('#crystal').textContent = crystals.toLocaleString('tr-TR');
@@ -101,7 +162,7 @@ function updateCountdown() {
   $('#hours').textContent = Math.floor((seconds % 86400) / 3600).toString().padStart(2, '0');
   $('#minutes').textContent = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
   $('#seconds').textContent = (seconds % 60).toString().padStart(2, '0');
-  $('#saleDate').textContent = `${Math.ceil(seconds / 86400)} GÜN`;
+  $('#saleDate').textContent = `${Math.ceil(seconds / 86400)} DAYS`;
 }
 async function connectWallet() {
   const network = $('#network').value;
@@ -111,17 +172,17 @@ async function connectWallet() {
       const result = await provider.connect();
       walletPublicKey = result.publicKey.toString();
     } else {
-      if (!window.ethereum) throw new Error('MetaMask bulunamadı.');
+      if (!window.ethereum) throw new Error('MetaMask was not detected.');
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
       walletPublicKey = accounts[0];
     }
     const address = walletPublicKey.toString();
     $('#connectWallet').textContent = `${address.slice(0, 5)}...${address.slice(-4)}`;
-    $('#walletStatus').textContent = `Bağlandı: ${address.slice(0, 6)}...${address.slice(-4)}`;
-    notify('Cüzdan bağlandı. Satın alma işlemi için miktar gir.');
+    $('#walletStatus').textContent = `Connected: ${address.slice(0, 6)}...${address.slice(-4)}`;
+    notify('Wallet connected. Enter an amount to continue.');
     return walletPublicKey;
   } catch (error) {
-    notify(error.message || 'Cüzdan bağlantısı iptal edildi.');
+    notify(error.message || 'Wallet connection was cancelled.');
     return null;
   }
 }
@@ -138,20 +199,24 @@ function getTreasuryPublicKey(web3) {
   try {
     return new web3.PublicKey(treasury.solana);
   } catch {
-    throw new Error('Fon hazinesi Solana adresi geçersiz. Geçerli mainnet cüzdan adresi girilmeden ödeme gönderilmedi.');
+    throw new Error('The Solana treasury address is invalid. No payment was sent.');
   }
 }
 async function buyTokens() {
+  const buyButton = $('#buyButton');
+  if (buyButton.disabled) return;
   const network = $('#network').value;
   const asset = $('#asset').value;
-  if (network !== 'solana' || asset !== 'SOL') return notify('Şu anda yalnızca Solana mainnet destekleniyor.');
+  if (network !== 'solana' || asset !== 'SOL') return notify('Only Solana mainnet is currently supported.');
   const amountValue = $('#amount').value.trim();
   const amount = Number(amountValue);
   if (!amountValue || !Number.isFinite(amount) || amount < minimumSolPurchase || !/^\d+(\.\d{1,9})?$/.test(amountValue)) {
-    return notify(`En az ${minimumSolPurchase} SOL gir.`);
+    return notify(`Enter at least ${minimumSolPurchase} SOL.`);
   }
   const key = walletPublicKey || await connectWallet();
   if (!key) return;
+  buyButton.disabled = true;
+  buyButton.textContent = 'Processing...';
   try {
     if (network === 'solana') {
       const web3 = await loadSolanaWeb3();
@@ -161,7 +226,7 @@ async function buyTokens() {
       const paymentLamports = decimalToLamports(amountValue);
       const { connection, blockhash, lastValidBlockHeight } = await getLatestBlockhashWithFallback(web3);
       const transaction = new web3.Transaction({ feePayer: fromPubkey, recentBlockhash: blockhash }).add(web3.SystemProgram.transfer({ fromPubkey, toPubkey: treasuryPublicKey, lamports: paymentLamports }));
-      notify('Phantom onayı bekleniyor...');
+      notify('Waiting for Phantom approval...');
       const signedTransaction = await provider.signTransaction(transaction);
       const signature = await connection.sendRawTransaction(signedTransaction.serialize(), { preflightCommitment: 'confirmed' });
       await connection.confirmTransaction({ signature, blockhash, lastValidBlockHeight }, 'confirmed');
@@ -172,22 +237,25 @@ async function buyTokens() {
       });
       const distribution = await distributionResponse.json();
       if (!distributionResponse.ok) {
-        throw new Error(`${distribution.error || 'QMN dağıtımı tamamlanamadı.'} Ödeme imzası: ${signature}`);
+        throw new Error(`${distribution.error || 'QMN distribution failed.'} Payment signature: ${signature}`);
       }
-      notify(`QMN gönderildi: ${distribution.distributionSignature.slice(0, 12)}...`);
+      notify(`QMN sent: ${distribution.distributionSignature.slice(0, 12)}...`);
       return;
     }
   } catch (error) {
-    notify(error.message || 'İşlem reddedildi veya ağ bağlantısı başarısız.');
+    notify(error.message || 'The transaction was rejected or the network is unavailable.');
+  } finally {
+    buyButton.disabled = false;
+    buyButton.textContent = 'Buy QMN →';
   }
 }
 document.querySelectorAll('.game-nav button').forEach((button) => button.addEventListener('click', () => showView(button.dataset.view)));
 document.querySelectorAll('.planet-node').forEach((node) => node.addEventListener('click', () => {
-  if (node.classList.contains('locked')) return notify('Andromeda kilitli. Komutanlık seviyen 10 olmalı.');
+  if (node.classList.contains('locked')) return notify('Andromeda is locked. Commander level 10 is required.');
   document.querySelectorAll('.planet-node').forEach((item) => item.classList.remove('selected'));
   node.classList.add('selected');
   $('#selectedPlanet').textContent = node.dataset.planet;
-  $('#planetStatus').textContent = node.dataset.planet === 'Jupiter' ? 'Savaş alanı aktif. Düşman filosu bekliyor.' : `${node.dataset.planet} keşfedildi. Rotanı ayarlamaya hazır.`;
+  $('#planetStatus').textContent = node.dataset.planet === 'Jupiter' ? 'Battle zone active. Enemy fleet awaiting orders.' : `${node.dataset.planet} discovered. Ready to set your route.`;
 }));
 $('#connectWallet').addEventListener('click', connectWallet);
 $('#buyButton').addEventListener('click', buyTokens);
@@ -195,26 +263,26 @@ $('#network').addEventListener('change', () => {
   const network = $('#network').value;
   $('#asset').innerHTML = '<option value="SOL">SOL</option>';
   walletPublicKey = null;
-  $('#connectWallet').textContent = 'Cüzdan bağla';
-  $('#walletStatus').textContent = 'Cüzdan bağlı değil';
+  $('#connectWallet').textContent = 'Connect wallet';
+  $('#walletStatus').textContent = 'Wallet not connected';
 });
-$('#missionButton').addEventListener('click', () => { showView('battle'); notify('Savaş alanına giriş yapıldı.'); });
+$('#missionButton').addEventListener('click', () => { showView('battle'); notify('Entering the battle zone.'); });
 $('#travelButton').addEventListener('click', () => {
   if ($('#selectedPlanet').textContent === 'Jupiter') return showView('battle');
   $('#ufo').style.left = `${20 + Math.random() * 55}%`;
   $('#ufo').style.top = `${25 + Math.random() * 50}%`;
-  notify(`${$('#selectedPlanet').textContent} rotasına uçuş başladı.`);
+  notify(`Flight started toward ${$('#selectedPlanet').textContent}.`);
 });
 $('#retreatButton').addEventListener('click', () => showView('galaxy'));
 $('#fireButton').addEventListener('click', () => {
   if (enemies <= 0) return notify('Bu dalga temizlendi.');
-  if (energy < 12) return notify('Enerji düşük.');
+  if (energy < 12) return notify('Energy is low.');
   energy -= 12;
   enemies -= 1;
   $('#enemyCount').textContent = enemies;
   document.querySelector('.enemy')?.remove();
-  $('#battleLog').textContent = enemies ? 'Lazer isabet etti. Formasyon dağılıyor.' : 'Dalga temizlendi! +80 kristal.';
-  if (!enemies) { crystals += 80; $('#wave').textContent = '2'; notify('Savaş kazanıldı. +80 kristal!'); }
+  $('#battleLog').textContent = enemies ? 'Laser hit. Formation breaking.' : 'Wave cleared! +80 crystal.';
+  if (!enemies) { crystals += 80; $('#wave').textContent = '2'; notify('Battle won. +80 crystal!'); }
   updateResource();
 });
 $('#photoInput').addEventListener('change', (event) => {
@@ -234,13 +302,13 @@ $('#photoInput').addEventListener('change', (event) => {
       $('#avatar').style.backgroundImage = result; $('#profileAvatar').style.backgroundImage = result;
       $('#avatar').textContent = ''; $('#profileAvatar').textContent = '';
     }; image.src = reader.result;
-  }; reader.readAsDataURL(file); notify('Alien avatarın hazırlanıyor.');
+  }; reader.readAsDataURL(file); notify('Preparing your alien avatar.');
 });
 document.querySelectorAll('.build-button').forEach((button) => button.addEventListener('click', () => {
   const cost = Number(button.dataset.cost || 0);
   if (cost && crystals < cost) return notify('Daha fazla kristal gerekli.');
-  crystals -= cost; button.textContent = 'Hazır ✓'; button.disabled = true; updateResource(); notify('Yeni UFO/tesis hazır.');
+  crystals -= cost; button.textContent = 'Ready ✓'; button.disabled = true; updateResource(); notify('New UFO/facility ready.');
 }));
-$('#digButton').addEventListener('click', () => { const reward = 25 + Math.floor(Math.random() * 35); crystals += reward; updateResource(); notify(`Kazı tamamlandı: +${reward} kristal.`); });
+$('#digButton').addEventListener('click', () => { const reward = 25 + Math.floor(Math.random() * 35); crystals += reward; updateResource(); notify(`Dig complete: +${reward} crystal.`); });
 setInterval(updateCountdown, 1000); setInterval(() => { if (energy < 86) { energy += 1; updateResource(); } }, 2200);
-mountTierAndLaunchpad(); updateCountdown(); updateResource();
+mountTierAndLaunchpad(); updateCountdown(); updateResource(); translatePageToEnglish();
