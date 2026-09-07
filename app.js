@@ -28,8 +28,8 @@ const usdtContracts = {
   bsc: '0x55d398326f99059fF775485246999027B3197955'
 };
 const solanaRpcEndpoints = [
-  'https://solana-rpc.publicnode.com',
-  'https://api.mainnet-beta.solana.com'
+  'https://api.mainnet-beta.solana.com',
+  'https://solana-rpc.publicnode.com'
 ];
 function loadSolanaWeb3() {
   if (window.solanaWeb3) return Promise.resolve(window.solanaWeb3);
@@ -259,10 +259,9 @@ async function buyTokens() {
   }
   const key = walletPublicKey || await connectWallet();
   if (!key) return;
-  buyButton.disabled = true;
-  buyButton.textContent = 'Processing...';
   try {
     if (network === 'solana') {
+      notify('Preparing Solana transaction...');
       const web3 = await loadSolanaWeb3();
       const provider = getPhantomProvider();
       const fromPubkey = new web3.PublicKey(key.toString());
@@ -273,6 +272,8 @@ async function buyTokens() {
       const paymentLamports = decimalToLamports(amountValue);
       const { connection, blockhash, lastValidBlockHeight } = await getLatestBlockhashWithFallback(web3);
       const transaction = new web3.Transaction({ feePayer: fromPubkey, recentBlockhash: blockhash }).add(web3.SystemProgram.transfer({ fromPubkey, toPubkey: treasuryPublicKey, lamports: paymentLamports }));
+      buyButton.disabled = true;
+      buyButton.textContent = 'Processing...';
       notify('Opening Phantom approval...');
       let signature;
       if (typeof provider.sendTransaction === 'function') {
