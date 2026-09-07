@@ -2,6 +2,9 @@
   "name": "quintumnia",
   "private": true,
   "version": "1.0.0",
+  "scripts": {
+    "lint": "node --check app.js"
+  },
   "engines": {
     "node": ">=20"
   },
