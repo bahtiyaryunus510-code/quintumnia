@@ -61,7 +61,10 @@ async function getLatestBlockhashWithFallback(web3) {
   for (const endpoint of solanaRpcEndpoints) {
     const connection = new web3.Connection(endpoint, 'confirmed');
     try {
-      const latest = await connection.getLatestBlockhash('confirmed');
+      const latest = await Promise.race([
+        connection.getLatestBlockhash('confirmed'),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('RPC request timed out')), 8000))
+      ]);
       return { connection, ...latest };
     } catch (error) {
       lastError = error;
@@ -263,13 +266,27 @@ async function buyTokens() {
       const web3 = await loadSolanaWeb3();
       const provider = getPhantomProvider();
       const fromPubkey = new web3.PublicKey(key.toString());
+      if (provider.publicKey && provider.publicKey.toString() !== fromPubkey.toString()) {
+        throw new Error('Phantom is connected to a different wallet. Reconnect Phantom and try again.');
+      }
       const treasuryPublicKey = getTreasuryPublicKey(web3);
       const paymentLamports = decimalToLamports(amountValue);
       const { connection, blockhash, lastValidBlockHeight } = await getLatestBlockhashWithFallback(web3);
       const transaction = new web3.Transaction({ feePayer: fromPubkey, recentBlockhash: blockhash }).add(web3.SystemProgram.transfer({ fromPubkey, toPubkey: treasuryPublicKey, lamports: paymentLamports }));
       notify('Waiting for Phantom approval...');
-      const signedTransaction = await provider.signTransaction(transaction);
-      const signature = await connection.sendRawTransaction(signedTransaction.serialize(), { preflightCommitment: 'confirmed' });
+      let signature;
+      if (typeof provider.signAndSendTransaction === 'function') {
+        const result = await provider.signAndSendTransaction(transaction);
+        signature = typeof result === 'string' ? result : result?.signature;
+      } else if (typeof provider.sendTransaction === 'function') {
+        signature = await provider.sendTransaction(transaction, connection, { preflightCommitment: 'confirmed' });
+      } else if (typeof provider.signTransaction === 'function') {
+        const signedTransaction = await provider.signTransaction(transaction);
+        signature = await connection.sendRawTransaction(signedTransaction.serialize(), { preflightCommitment: 'confirmed' });
+      } else {
+        throw new Error('Phantom cannot approve transactions in this browser. Update or unlock Phantom and try again.');
+      }
+      if (!signature) throw new Error('Phantom did not return a transaction signature.');
       await connection.confirmTransaction({ signature, blockhash, lastValidBlockHeight }, 'confirmed');
       const distributionResponse = await fetch('/api/purchase', {
         method: 'POST',
@@ -284,7 +301,10 @@ async function buyTokens() {
       return;
     }
   } catch (error) {
-    notify(error.message || 'The transaction was rejected or the network is unavailable.');
+    const message = error?.code === 4001 || /reject|cancel/i.test(error?.message || '')
+      ? 'Transaction was rejected in Phantom.'
+      : error.message || 'The transaction failed before payment confirmation.';
+    notify(message);
   } finally {
     buyButton.disabled = false;
     buyButton.textContent = 'Buy QMN →';
