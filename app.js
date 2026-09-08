@@ -1,5 +1,10 @@
 const $ = (selector) => document.querySelector(selector);
 const toast = $('#toast');
+document.addEventListener('click', (event) => {
+  if (!event.target.closest('#buyButton')) return;
+  event.preventDefault();
+  buyTokens();
+}, true);
 let crystals = 248;
 let enemies = 5;
 let energy = 65;
@@ -320,7 +325,6 @@ document.querySelectorAll('.planet-node').forEach((node) => node.addEventListene
   $('#planetStatus').textContent = node.dataset.planet === 'Jupiter' ? 'Battle zone active. Enemy fleet awaiting orders.' : `${node.dataset.planet} discovered. Ready to set your route.`;
 }));
 $('#connectWallet').addEventListener('click', connectWallet);
-$('#buyButton').addEventListener('click', buyTokens);
 $('#network').addEventListener('change', () => {
   const network = $('#network').value;
   $('#asset').innerHTML = '<option value="SOL">SOL</option>';
